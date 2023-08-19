@@ -19,7 +19,7 @@ const business: MenuItem = {
     {
       id: "admins",
       title: "Administradores",
-      url: "/?",
+      url: "/admins",
       type: MenuItemType.Item,
       icon: IconUser,
       breadcrumbs: false,

@@ -19,7 +19,7 @@ const other: MenuItem = {
     {
       id: "wallets",
       title: "Billeteras",
-      url: "/?",
+      url: "/wallets",
       type: MenuItemType.Item,
       icon: IconCreditCard,
       breadcrumbs: false,
