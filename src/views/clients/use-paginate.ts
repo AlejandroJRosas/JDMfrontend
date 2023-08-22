@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 // Own
-import { Client } from 'core/clients/types';
+import { Client } from 'services/clients/types';
 import getPaginate from 'services/clients/get-paginate';
 import { PaginateData } from 'services/types';
 import { useAppDispatch } from 'store';

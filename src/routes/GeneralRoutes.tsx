@@ -1,10 +1,17 @@
-// project imports
 import { RouteObject } from 'react-router'
 
-// Admins
-import Admins from 'views/admins'
 // Wallets
-// import Wallets from 'views/wallets'
+import Wallets from 'views/wallets'
+import CreateWallet from 'views/wallets/create'
+import EditWallet from 'views/wallets/edit'
+// Movements
+import Movements from 'views/movements'
+import CreateMovement from 'views/movements/create'
+import EditMovement from 'views/movements/edit'
+// Swaps
+import Swaps from 'views/swaps'
+import CreateSwap from 'views/swaps/create'
+import EditSwap from 'views/swaps/edit'
 // State
 import States from 'views/states'
 import CreateState from 'views/states/create'
@@ -31,10 +38,6 @@ import EditJob from 'views/jobs/edit'
 import Managers from 'views/managers'
 import CreateManager from 'views/managers/create'
 import EditManager from 'views/managers/edit'
-//Clients
-import Clients from 'views/clients'
-import CreateClient from 'views/clients/create'
-import EditClient from 'views/clients/edit'
 //Employees
 import Employees from 'views/employees'
 import CreateEmployee from 'views/employees/create'
@@ -55,10 +58,6 @@ import EditBankCard from 'views/bankCards/edit'
 import Payments from 'views/payments'
 import CreatePayments from 'views/payments/create'
 import EditPayments from 'views/payments/edit'
-//Productos
-import Products from 'views/products'
-import CreateProduct from 'views/products/create'
-import EditProduct from 'views/products/edit'
 //Supply Lines
 import SupplyLines from 'views/supply-lines'
 import CreateSupplyLine from 'views/supply-lines/create'
@@ -67,20 +66,10 @@ import EditSupplyLine from 'views/supply-lines/edit'
 import Discounts from 'views/discounts'
 import CreateDiscount from 'views/discounts/create'
 import EditDiscount from 'views/discounts/edit'
-//Bills
-import Bills from 'views/bills'
-import CreateBill from 'views/bills/create'
-import EditBill from 'views/bills/edit'
-import BillDetail from 'views/bills/detail'
 //Vehicles
 import Vehicles from 'views/vehicles'
 import CreateVehicle from 'views/vehicles/create'
 import EditVehicle from 'views/vehicles/edit'
-//Orders
-import Orders from 'views/orders'
-import CreateOrder from 'views/orders/create'
-import EditOrder from 'views/orders/edit'
-import OrderDetail from 'views/orders/detail'
 //Stadistics
 import NoEcoProducts from 'views/stadistics/no-eco-products'
 import FakeClients from 'views/stadistics/fake-clients'
@@ -91,16 +80,50 @@ import EmployeesQuantityServicesPerMonth from 'views/stadistics/employees-quanti
 import FrecuentModelsByDate from 'views/stadistics/frecuent-models-by-date'
 
 const GeneralRoutes: RouteObject[] = [
-  // Admins
   {
-    path: 'admins',
-    element: <Admins />
+    path: 'general',
+    children: [
+      // Wallets
+      {
+        path: 'wallets',
+        element: <Wallets />
+      },
+      {
+        path: 'wallets/create',
+        element: <CreateWallet />
+      },
+      {
+        path: 'wallets/edit/:id',
+        element: <EditWallet />
+      },
+      // Movements
+      {
+        path: 'movements',
+        element: <Movements />
+      },
+      {
+        path: 'movements/create',
+        element: <CreateMovement />
+      },
+      {
+        path: 'movements/edit/:id',
+        element: <EditMovement />
+      },
+      // Swaps
+      {
+        path: 'swaps',
+        element: <Swaps />
+      },
+      {
+        path: 'swaps/create',
+        element: <CreateSwap />
+      },
+      {
+        path: 'swaps/edit/:id',
+        element: <EditSwap />
+      }
+    ]
   },
-  // Wallets
-  // {
-  //   path: 'wallets',
-  //   element: <Wallets />
-  // },
   // Estados
   {
     path: 'states',
@@ -187,19 +210,6 @@ const GeneralRoutes: RouteObject[] = [
     path: 'managers/edit/:id',
     element: <EditManager />
   },
-  //Clientes
-  {
-    path: 'clients',
-    element: <Clients />
-  },
-  {
-    path: 'clients/create',
-    element: <CreateClient />
-  },
-  {
-    path: 'clients/edit/:id',
-    element: <EditClient />
-  },
   //Empleados
   {
     path: 'employees',
@@ -262,19 +272,6 @@ const GeneralRoutes: RouteObject[] = [
     path: 'payments/edit/billId/:billId/payment/:paymentId',
     element: <EditPayments />
   },
-  //Productos
-  {
-    path: 'products',
-    element: <Products />
-  },
-  {
-    path: 'products/create',
-    element: <CreateProduct />
-  },
-  {
-    path: 'products/edit/:id',
-    element: <EditProduct />
-  },
   //Supply Lines
   {
     path: 'supply-lines',
@@ -300,23 +297,6 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'discounts/edit/:id',
     element: <EditDiscount />
-  },
-  //Bills
-  {
-    path: 'bills',
-    element: <Bills />
-  },
-  {
-    path: 'bills/create',
-    element: <CreateBill />
-  },
-  {
-    path: 'bills/edit/:id',
-    element: <EditBill />
-  },
-  {
-    path: 'bills/detail/:id',
-    element: <BillDetail />
   },
   //Vehículos
   {
@@ -359,23 +339,6 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'models-date-attendant',
     element: <FrecuentModelsByDate />
-  },
-  //Ordenes
-  {
-    path: 'orders',
-    element: <Orders />
-  },
-  {
-    path: 'orders/create',
-    element: <CreateOrder />
-  },
-  {
-    path: 'orders/edit/:id',
-    element: <EditOrder />
-  },
-  {
-    path: 'orders/detail/:id',
-    element: <OrderDetail />
   }
 ]
 

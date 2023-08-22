@@ -1,61 +1,61 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from 'react'
 // material-ui
 import {
   setErrorMessage,
   setIsLoading,
-  setSuccessMessage,
-} from "store/customizationSlice";
-import useBillById from "core/bills/use-bill-by-id";
-import BackendError from "exceptions/backend-error";
-import MainCard from "components/cards/MainCard";
-import editBill from "services/bills/edit-bill";
-import useBillId from "./use-bill-id";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router";
-import Form, { FormValues } from "../form";
-import styled from "styled-components";
-import { useAppDispatch } from "store";
-import { FormikHelpers } from "formik";
+  setSuccessMessage
+} from 'store/customizationSlice'
+import useBillById from 'core/bills/use-bill-by-id'
+import BackendError from 'exceptions/backend-error'
+import MainCard from 'components/cards/MainCard'
+import editBill from 'services/bills/edit-bill'
+import useBillId from './use-bill-id'
+import { Typography } from '@mui/material'
+import { useNavigate } from 'react-router'
+import Form, { FormValues } from '../form'
+import styled from 'styled-components'
+import { useAppDispatch } from 'store'
+import { FormikHelpers } from 'formik'
 
 const EditBill: FunctionComponent<Props> = ({ className }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const billId = useBillId();
-  const bill = useBillById(billId);
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const billId = useBillId()
+  const bill = useBillById(billId)
   const onSubmit = useCallback(
     async (
       values: any,
       { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>
     ) => {
       try {
-        dispatch(setIsLoading(true));
-        setErrors({});
-        setStatus({});
-        setSubmitting(true);
-        await editBill(billId!, values);
-        navigate("/bills");
-        dispatch(setSuccessMessage(`Factura editada correctamente`));
+        dispatch(setIsLoading(true))
+        setErrors({})
+        setStatus({})
+        setSubmitting(true)
+        await editBill(billId!, values)
+        navigate('/clientela/bills')
+        dispatch(setSuccessMessage(`Factura editada correctamente`))
       } catch (error) {
         if (error instanceof BackendError) {
           setErrors({
             ...error.getFieldErrorsMessages(),
-            submit: error.getMessage(),
-          });
-          dispatch(setErrorMessage(error.getMessage()));
+            submit: error.getMessage()
+          })
+          dispatch(setErrorMessage(error.getMessage()))
         }
-        setStatus({ success: false });
+        setStatus({ success: false })
       } finally {
-        dispatch(setIsLoading(false));
-        setSubmitting(false);
+        dispatch(setIsLoading(false))
+        setSubmitting(false)
       }
     },
     [dispatch, navigate, billId]
-  );
+  )
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
+        <Typography variant='h3' component='h3'>
           Facturas
         </Typography>
       </MainCard>
@@ -63,18 +63,18 @@ const EditBill: FunctionComponent<Props> = ({ className }) => {
         <Form
           initialValues={{
             orderId: bill.orderId,
-            submit: null,
+            submit: null
           }}
-          title={"Editar factura"}
+          title={'Editar factura'}
           onSubmit={onSubmit}
         />
       )}
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(EditBill)`
@@ -99,4 +99,4 @@ export default styled(EditBill)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

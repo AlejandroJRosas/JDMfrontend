@@ -10,11 +10,11 @@ import { FunctionComponent, useCallback } from 'react'
 import { useNavigate } from 'react-router'
 
 const Admins: FunctionComponent<Prop> = ({ className }) => {
-  const { items, paginate, setPage, fetchStates } = usePaginate()
+  const { items, paginate, setPage, fetchAdmins } = usePaginate()
   const navigate = useNavigate()
 
   const goToCreate = useCallback(() => {
-    navigate('/states/create')
+    navigate('/business/admins/create')
   }, [navigate])
 
   return (
@@ -41,7 +41,7 @@ const Admins: FunctionComponent<Prop> = ({ className }) => {
         items={items}
         paginate={paginate}
         onChange={setPage}
-        fetchItems={fetchStates}
+        fetchItems={fetchAdmins}
       />
     </MainCard>
   )

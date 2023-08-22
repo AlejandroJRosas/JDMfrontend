@@ -2,7 +2,7 @@ import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
 import { LocalOrderActivity } from 'core/order-activities/types';
-import { Order } from 'core/orders/types';
+import { Order } from 'services/orders/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 

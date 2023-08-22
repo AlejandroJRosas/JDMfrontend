@@ -1,96 +1,106 @@
-import { Button, Pagination } from "@mui/material";
-import DynamicTable from "components/DynamicTable";
-import { Product } from "core/products/types";
-import styled from "styled-components";
+import { Button, Pagination } from '@mui/material'
+import DynamicTable from 'components/DynamicTable'
+import { Product } from 'services/products/types'
+import styled from 'styled-components'
 // Own
-import { useAppDispatch } from "../../store/index";
+import { useAppDispatch } from '../../store/index'
 import {
   setIsLoading,
   setSuccessMessage,
-  setErrorMessage,
-} from "store/customizationSlice";
-import BackendError from "exceptions/backend-error";
-import deleteProduct from "services/products/delete-product";
-import { FunctionComponent, useCallback, useState } from "react";
-import { PaginateData } from "services/types";
-import { IconEdit, IconTrash } from "@tabler/icons";
-import { useNavigate } from "react-router";
-import DialogDelete from "components/dialogDelete";
+  setErrorMessage
+} from 'store/customizationSlice'
+import BackendError from 'exceptions/backend-error'
+import deleteProduct from 'services/products/delete-product'
+import { FunctionComponent, useCallback, useState } from 'react'
+import { PaginateData } from 'services/types'
+import { IconEdit, IconTrash } from '@tabler/icons'
+import { useNavigate } from 'react-router'
+import DialogDelete from 'components/dialogDelete'
 
 const Table: FunctionComponent<Prop> = ({
   items,
   paginate,
   className,
   onChange,
-  fetchItems,
+  fetchItems
 }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [open, setOpen] = useState<boolean>(false);
-  const [currentProductId, setCurrentProductId] = useState<number>(0);
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [open, setOpen] = useState<boolean>(false)
+  const [currentProductId, setCurrentProductId] = useState<number>(0)
 
   const handleOpen = useCallback((currentProductId: number) => {
-    setOpen(true);
-    setCurrentProductId(currentProductId);
-  }, []);
+    setOpen(true)
+    setCurrentProductId(currentProductId)
+  }, [])
 
   const handleClose = useCallback(() => {
-    setOpen(false);
-    setCurrentProductId(0);
-  }, []);
+    setOpen(false)
+    setCurrentProductId(0)
+  }, [])
 
   const onDelete = useCallback(
     async (productId: number) => {
       try {
-        dispatch(setIsLoading(true));
-        await deleteProduct(productId!);
-        dispatch(setSuccessMessage(`Producto eliminado correctamente`));
+        dispatch(setIsLoading(true))
+        await deleteProduct(productId!)
+        dispatch(setSuccessMessage(`Producto eliminado correctamente`))
       } catch (error) {
         if (error instanceof BackendError) {
-          dispatch(setErrorMessage(error.getMessage()));
+          dispatch(setErrorMessage(error.getMessage()))
         }
       } finally {
-        dispatch(setIsLoading(false));
-        handleClose();
-        fetchItems();
+        dispatch(setIsLoading(false))
+        handleClose()
+        fetchItems()
       }
     },
     [dispatch, fetchItems, handleClose]
-  );
+  )
 
   return (
     <div className={className}>
       <DynamicTable
         headers={[
-          { columnLabel: "Id", fieldName: "productId", cellAlignment: "left" },
+          { columnLabel: 'Id', fieldName: 'productId', cellAlignment: 'left' },
           {
-            columnLabel: "Nombre",
-            fieldName: "shortNameProduct",
-            cellAlignment: "left",
+            columnLabel: 'Nombre',
+            fieldName: 'name',
+            cellAlignment: 'left'
           },
           {
-            columnLabel: "Precio",
-            cellAlignment: "left",
-            onRender: (row: Product) => row.price + "$",
+            columnLabel: 'Precio',
+            cellAlignment: 'left',
+            onRender: (row: Product) => (row.price ? '$' + row.price : '')
           },
           {
-            columnLabel: "Proveedor",
-            fieldName: "provider",
-            cellAlignment: "left",
+            columnLabel: 'Cantidad',
+            fieldName: 'quantity',
+            cellAlignment: 'left'
           },
           {
-            columnLabel: "Creación",
-            fieldName: "createdAt",
-            cellAlignment: "left",
+            columnLabel: 'Ganancia',
+            cellAlignment: 'left',
+            onRender: (row: Product) => (row.price ? '$' + row.price : '')
           },
+          {
+            columnLabel: 'Creación',
+            fieldName: 'createdAt',
+            cellAlignment: 'left'
+          },
+          {
+            columnLabel: 'Última Actualización',
+            fieldName: 'updatedAt',
+            cellAlignment: 'left'
+          }
         ]}
         rows={items}
         components={[
           (row: Product) => (
             <Button
-              color="primary"
+              color='primary'
               onClick={() => {
-                navigate("/products/edit/" + row.productId);
+                navigate('/business/products/edit/' + row.productId)
               }}
               startIcon={<IconEdit />}
             >
@@ -99,44 +109,44 @@ const Table: FunctionComponent<Prop> = ({
           ),
           (row: Product) => (
             <Button
-              color="secondary"
+              color='secondary'
               onClick={() => handleOpen(row.productId)}
               startIcon={<IconTrash />}
             >
               Eliminar
             </Button>
-          ),
+          )
         ]}
       />
       <DialogDelete
         handleClose={handleClose}
         onDelete={() => {
-          onDelete(currentProductId);
+          onDelete(currentProductId)
         }}
         open={open}
       />
-      <div className={"paginator-container"}>
+      <div className={'paginator-container'}>
         <Pagination
           count={paginate.pages}
           page={paginate.page}
-          variant="outlined"
-          shape="rounded"
-          color="primary"
+          variant='outlined'
+          shape='rounded'
+          color='primary'
           onChange={(event, page) => {
-            onChange(page);
+            onChange(page)
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 interface Prop {
-  items: Product[];
-  paginate: PaginateData;
-  className?: string;
-  onChange: (page: number) => void;
-  fetchItems: () => void;
+  items: Product[]
+  paginate: PaginateData
+  className?: string
+  onChange: (page: number) => void
+  fetchItems: () => void
 }
 
 export default styled(Table)`
@@ -149,4 +159,4 @@ export default styled(Table)`
     justify-content: center;
     flex-direction: row;
   }
-`;
+`

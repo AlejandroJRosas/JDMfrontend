@@ -1,22 +1,32 @@
-import { FunctionComponent, useState } from 'react';
-import { Formik, FormikHelpers } from 'formik';
+import { FunctionComponent, useState } from 'react'
+import { Formik, FormikHelpers } from 'formik'
 // material-ui
-import { Button, FormControl, FormHelperText, InputAdornment, TextField } from '@mui/material';
-import styled from 'styled-components';
-import SelectField from 'components/SelectField';
-import useValidationSchema from './use-validation-schema';
-import useAgenciesOptions from 'core/agencies/use-agencies-options';
-import useProductsOptions from 'core/products/use-products-options';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  TextField
+} from '@mui/material'
+import styled from 'styled-components'
+import SelectField from 'components/SelectField'
+import useValidationSchema from './use-validation-schema'
+import useAgenciesOptions from 'core/agencies/use-agencies-options'
+import useProductsOptions from 'services/products/_utils/use-products-options'
 
-const USE_AUTOCOMPLETES = false;
+const USE_AUTOCOMPLETES = false
 
 const CoordinatorsForm: FunctionComponent<Props> = ({
-  className, onSubmit, initialValues, isUpdate, fixedAgencyRif
+  className,
+  onSubmit,
+  initialValues,
+  isUpdate,
+  fixedAgencyRif
 }) => {
-  const isCreated = !isUpdate;
-  const validationSchema = useValidationSchema();
-  const agenciesOptions = useAgenciesOptions();
-  const productsOptions = useProductsOptions();
+  const isCreated = !isUpdate
+  const validationSchema = useValidationSchema()
+  const agenciesOptions = useAgenciesOptions()
+  const productsOptions = useProductsOptions()
 
   return (
     <div className={className}>
@@ -28,21 +38,29 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
         validationSchema={validationSchema}
         onSubmit={onSubmit as any}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <FormControl
-              className="field-form"
+              className='field-form'
               fullWidth
               disabled={isUpdate || !!fixedAgencyRif}
             >
               <SelectField
-                className="field-form"
+                className='field-form'
                 fullWidth={true}
-                name="agencyRif"
+                name='agencyRif'
                 disabled={isUpdate || !!fixedAgencyRif}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                label="Agencias"
+                label='Agencias'
                 options={agenciesOptions}
                 helperText={touched.agencyRif ? errors.agencyRif : ''}
                 error={touched.agencyRif && !!errors.agencyRif}
@@ -50,19 +68,15 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
                 value={values.agencyRif}
               />
             </FormControl>
-            <FormControl
-              className="field-form"
-              fullWidth
-              disabled={isUpdate}
-            >
+            <FormControl className='field-form' fullWidth disabled={isUpdate}>
               <SelectField
-                className="field-form"
+                className='field-form'
                 fullWidth={true}
-                name="productId"
+                name='productId'
                 disabled={isUpdate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                label="Producto"
+                label='Producto'
                 options={productsOptions}
                 helperText={touched.productId ? errors.productId : ''}
                 error={touched.productId && !!errors.productId}
@@ -70,91 +84,94 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
                 value={values.productId}
               />
             </FormControl>
-            <FormControl
-              className="field-form"
-              fullWidth
-            >
+            <FormControl className='field-form' fullWidth>
               <TextField
-                id="onStock"
-                label="Stock"
-                variant="outlined"
+                id='onStock'
+                label='Stock'
+                variant='outlined'
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.onStock}
                 helperText={touched.onStock ? errors.onStock : ''}
                 error={touched.onStock && !!errors.onStock}
                 InputProps={{
-                  endAdornment: <InputAdornment position="start">u</InputAdornment>
+                  endAdornment: (
+                    <InputAdornment position='start'>u</InputAdornment>
+                  )
                 }}
-                name="onStock"
+                name='onStock'
               />
             </FormControl>
-            <FormControl className="field-form" fullWidth>
+            <FormControl className='field-form' fullWidth>
               <TextField
-                id="minCapacity"
-                label="Capacidad minima"
-                variant="outlined"
+                id='minCapacity'
+                label='Capacidad minima'
+                variant='outlined'
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.minCapacity}
                 helperText={touched.minCapacity ? errors.minCapacity : ''}
                 error={touched.minCapacity && !!errors.minCapacity}
                 InputProps={{
-                  endAdornment: <InputAdornment position="start">u</InputAdornment>
+                  endAdornment: (
+                    <InputAdornment position='start'>u</InputAdornment>
+                  )
                 }}
-                name="minCapacity"
+                name='minCapacity'
               />
             </FormControl>
-            <FormControl className="field-form" fullWidth>
+            <FormControl className='field-form' fullWidth>
               <TextField
-                id="maxCapacity"
-                label="Capacidad maxima"
-                variant="outlined"
+                id='maxCapacity'
+                label='Capacidad maxima'
+                variant='outlined'
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.maxCapacity}
                 helperText={touched.maxCapacity ? errors.maxCapacity : ''}
                 error={touched.maxCapacity && !!errors.maxCapacity}
                 InputProps={{
-                  endAdornment: <InputAdornment position="start">u</InputAdornment>
+                  endAdornment: (
+                    <InputAdornment position='start'>u</InputAdornment>
+                  )
                 }}
-                name="maxCapacity"
+                name='maxCapacity'
               />
             </FormControl>
             {errors.submit && (
-                <FormHelperText error>{errors.submit}</FormHelperText>
+              <FormHelperText error>{errors.submit}</FormHelperText>
             )}
-            <Button variant="outlined" type="submit" color="primary">
-              { isCreated ? 'Agregar' : 'Editar' }
+            <Button variant='outlined' type='submit' color='primary'>
+              {isCreated ? 'Agregar' : 'Editar'}
             </Button>
           </form>
         )}
       </Formik>
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
-  onSubmit: OnSubmit;
-  initialValues: StocksFormValues;
-  isUpdate?: boolean;
-  fixedAgencyRif: string | null;
+  className?: string
+  onSubmit: OnSubmit
+  initialValues: StocksFormValues
+  isUpdate?: boolean
+  fixedAgencyRif: string | null
 }
 
 export type StocksFormValues = {
-  agencyRif: string | null;
-  productId: string | null;
-  onStock: number,
-  minCapacity: number,
-  maxCapacity: number,
-  submit: string | null;
-};
+  agencyRif: string | null
+  productId: string | null
+  onStock: number
+  minCapacity: number
+  maxCapacity: number
+  submit: string | null
+}
 
 export type OnSubmit = (
   values: StocksFormValues,
   helpers: FormikHelpers<StocksFormValues>
-) => void | Promise<any>;
+) => void | Promise<any>
 
 export default styled(CoordinatorsForm)`
   display: flex;
@@ -166,7 +183,8 @@ export default styled(CoordinatorsForm)`
     grid-column-gap: 20px; /* espacio entre las columnas */
   }
 
-  @media screen and (max-width: 768px) { /* media query para dispositivos móviles */
+  @media screen and (max-width: 768px) {
+    /* media query para dispositivos móviles */
     .container-form-services {
       grid-template-columns: 1fr; /* una sola columna */
       grid-column-gap: 0; /* sin espacio entre columnas */
@@ -196,4 +214,4 @@ export default styled(CoordinatorsForm)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

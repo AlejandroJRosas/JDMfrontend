@@ -1,14 +1,18 @@
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback } from 'react'
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import {  Typography } from '@mui/material';
-import styled from 'styled-components';
-import BackendError from 'exceptions/backend-error';
-import { useNavigate } from 'react-router';
-import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from 'store';
-import Form from './form';
-import createOrder from 'services/orders/create-order';
+import MainCard from 'components/cards/MainCard'
+import { Typography } from '@mui/material'
+import styled from 'styled-components'
+import BackendError from 'exceptions/backend-error'
+import { useNavigate } from 'react-router'
+import {
+  setErrorMessage,
+  setIsLoading,
+  setSuccessMessage
+} from 'store/customizationSlice'
+import { useAppDispatch } from 'store'
+import Form from './form'
+import createOrder from 'services/orders/create-order'
 
 const INITIAL_VALUES: any = {
   entryTime: '',
@@ -19,66 +23,72 @@ const INITIAL_VALUES: any = {
   responsibleName: null,
   realDeparture: null,
   activities: [],
-  submit: null,
-};
+  submit: null
+}
 
 const CreateService: FunctionComponent<Props> = ({ className }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
-    console.log(values)
-    try {
-      dispatch(setIsLoading(true));
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
-      await createOrder({
-        entryTime: values.entryTime,
-        estimatedDeparture: values.estimatedDeparture,
-        bookingId: values.bookingId,
-        employeeDni: values.employeeDni,
-        responsibleDni: values.responsibleDni,
-        responsibleName: values.responsibleName,
-        activities: values.activities,
-        realDeparture: null,
-      });
-      navigate('/orders');
-      dispatch(setSuccessMessage(`Servicio ${values.description} creada correctamente`));
-    } catch (error) {
-      if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
-        dispatch(setErrorMessage(error.getMessage()));
+  const onSubmit = useCallback(
+    async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+      console.log(values)
+      try {
+        dispatch(setIsLoading(true))
+        setErrors({})
+        setStatus({})
+        setSubmitting(true)
+        await createOrder({
+          clientId: values.clientId,
+          entryTime: values.entryTime,
+          estimatedDeparture: values.estimatedDeparture,
+          bookingId: values.bookingId,
+          employeeDni: values.employeeDni,
+          responsibleDni: values.responsibleDni,
+          responsibleName: values.responsibleName,
+          activities: values.activities,
+          realDeparture: null
+        })
+        navigate('/clientela/orders')
+        dispatch(
+          setSuccessMessage(`Orden ${values.description} creada correctamente`)
+        )
+      } catch (error) {
+        if (error instanceof BackendError) {
+          setErrors({
+            ...error.getFieldErrorsMessages(),
+            submit: error.getMessage()
+          })
+          dispatch(setErrorMessage(error.getMessage()))
+        }
+        setStatus({ success: false })
+      } finally {
+        dispatch(setIsLoading(false))
+        setSubmitting(false)
       }
-      setStatus({ success: false });
-    } finally {
-      dispatch(setIsLoading(false));
-      setSubmitting(false);
-    }
-  }, [dispatch, navigate]);
+    },
+    [dispatch, navigate]
+  )
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
+        <Typography variant='h3' component='h3'>
           Ordenes
         </Typography>
       </MainCard>
 
       <Form
         initialValues={INITIAL_VALUES}
-        title={'Crear orden'}
+        title={'Crear Orden'}
         onSubmit={onSubmit}
       />
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(CreateService)`
@@ -103,4 +113,4 @@ export default styled(CreateService)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

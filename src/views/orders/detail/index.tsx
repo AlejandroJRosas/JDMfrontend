@@ -1,32 +1,32 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react'
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import {  Typography } from '@mui/material';
-import styled from 'styled-components';
-import Detail from './detail';
-import useOrderId from 'core/orders/use-order-id';
-import useReloadOrderById from 'core/orders/use-reload-order-by-id';
+import MainCard from 'components/cards/MainCard'
+import { Typography } from '@mui/material'
+import styled from 'styled-components'
+import Detail from './detail'
+import useOrderId from 'services/orders/_utils/use-order-id'
+import useReloadOrderById from 'services/orders/_utils/use-reload-order-by-id'
 
-const ModelDetail: FunctionComponent<Props> = ({className}) => {
-  const orderId = useOrderId();
-  const { order, reload } = useReloadOrderById(orderId);
+const ModelDetail: FunctionComponent<Props> = ({ className }) => {
+  const orderId = useOrderId()
+  const { order, reload } = useReloadOrderById(orderId)
 
-  if (!order) return <></>;
+  if (!order) return <></>
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
-          { 'Detalle de orden ' + order.orderId }
+        <Typography variant='h3' component='h3'>
+          {'Detalle de orden ' + order.orderId}
         </Typography>
       </MainCard>
       <Detail order={order} onRefresh={reload} />
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(ModelDetail)`
@@ -51,5 +51,4 @@ export default styled(ModelDetail)`
     display: flex;
     flex-direction: row;
   }
-`;
-
+`

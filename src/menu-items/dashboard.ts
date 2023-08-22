@@ -1,7 +1,5 @@
-// assets
 import { IconDashboard } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
-// constant
 const icons = { IconDashboard };
 
 const dashboard: MenuItem = {

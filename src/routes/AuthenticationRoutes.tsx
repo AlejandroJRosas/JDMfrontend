@@ -1,12 +1,14 @@
-import { lazy } from 'react';
+import { lazy } from 'react'
 
 // project imports
-import Loadable from 'components/Loadable';
-import MinimalLayout from 'layout/MinimalLayout';
-import { RouteObject } from 'react-router';
+import Loadable from 'components/Loadable'
+import MinimalLayout from 'layout/MinimalLayout'
+import { RouteObject } from 'react-router'
 
 // login option 3 routing
-const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
+const AuthLogin = Loadable(
+  lazy(() => import('views/pages/authentication/authentication3/Login3'))
+)
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -17,8 +19,8 @@ const AuthenticationRoutes: RouteObject = {
     {
       path: '/pages/login',
       element: <AuthLogin />
-    },
+    }
   ]
-};
+}
 
-export default AuthenticationRoutes;
+export default AuthenticationRoutes

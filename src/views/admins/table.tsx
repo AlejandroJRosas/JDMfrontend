@@ -2,9 +2,9 @@ import { Button, Pagination } from '@mui/material'
 import { IconTrash, IconEdit } from '@tabler/icons'
 import DynamicTable from 'components/DynamicTable'
 // Own
-import { State } from 'core/states/types'
+import { Admin } from 'services/admins/types'
 import { FunctionComponent, useCallback, useState } from 'react'
-import { StatePaginatedResponse } from 'services/states/get-paginate'
+import { AdminPaginatedResponse } from 'services/admins/get-paginate'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router'
 import { useAppDispatch } from 'store/index'
@@ -14,7 +14,7 @@ import {
   setErrorMessage
 } from 'store/customizationSlice'
 import BackendError from 'exceptions/backend-error'
-import deleteState from 'services/states/delete-state'
+import deleteAdmin from 'services/admins/delete-admin'
 import DialogDelete from 'components/dialogDelete'
 
 const Table: FunctionComponent<Props> = ({
@@ -40,11 +40,11 @@ const Table: FunctionComponent<Props> = ({
   }, [])
 
   const onDelete = useCallback(
-    async (stateId: number) => {
+    async (adminId: number) => {
       try {
         dispatch(setIsLoading(true))
-        await deleteState(stateId!)
-        dispatch(setSuccessMessage(`Estado eliminado correctamente`))
+        await deleteAdmin(adminId!)
+        dispatch(setSuccessMessage(`Administrador eliminado correctamente`))
       } catch (error) {
         if (error instanceof BackendError) {
           dispatch(setErrorMessage(error.getMessage()))
@@ -62,31 +62,36 @@ const Table: FunctionComponent<Props> = ({
     <div className={className}>
       <DynamicTable
         headers={[
-          { columnLabel: 'Id', fieldName: 'stateId', cellAlignment: 'left' },
+          { columnLabel: 'ID', fieldName: 'adminId', cellAlignment: 'left' },
           { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
           {
-            columnLabel: 'Creació',
+            columnLabel: 'Correo Electrónico',
+            fieldName: 'email',
+            cellAlignment: 'left'
+          },
+          {
+            columnLabel: 'Creación',
             fieldName: 'createdAt',
             cellAlignment: 'left'
           }
         ]}
         rows={items}
         components={[
-          (row: State) => (
+          (row: Admin) => (
             <Button
               color='primary'
               onClick={() => {
-                navigate('/states/edit/' + row.stateId)
+                navigate('/business/admins/edit/' + row.adminId)
               }}
               startIcon={<IconEdit />}
             >
               Editar
             </Button>
           ),
-          (row: State) => (
+          (row: Admin) => (
             <Button
               color='secondary'
-              onClick={() => handleOpen(row.stateId)}
+              onClick={() => handleOpen(row.adminId)}
               startIcon={<IconTrash />}
             >
               Eliminar
@@ -117,7 +122,7 @@ const Table: FunctionComponent<Props> = ({
   )
 }
 
-type Props = StatePaginatedResponse & {
+type Props = AdminPaginatedResponse & {
   className?: string
   onChange: (page: number) => void
   fetchItems: () => void

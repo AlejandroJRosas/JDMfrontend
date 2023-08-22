@@ -2,7 +2,7 @@ import axios from 'axios';
 // Own
 import BackendError from 'exceptions/backend-error';
 import { API_BASE_URL } from 'config/constants';
-import { Product } from 'core/products/types';
+import { Product } from 'services/products/types';
 import store from 'store';
 
 const URL = `${API_BASE_URL}/products`;

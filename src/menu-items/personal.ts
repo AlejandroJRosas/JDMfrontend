@@ -1,7 +1,5 @@
-// assets
 import { IconBriefcase, IconUser, IconFriends, IconMan } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
-// constant
 
 const other: MenuItem = {
   id: 'agencies-crud-category-personal',

@@ -1,7 +1,7 @@
 import axios from "axios";
 // Own
 import store from "store";
-import { Product } from "core/products/types";
+import { Product, ProductPayload } from "services/products/types";
 import { API_BASE_URL } from "config/constants";
 import BackendError from "exceptions/backend-error";
 
@@ -22,5 +22,3 @@ export default async function createProduct(
     throw new BackendError(error);
   }
 }
-
-export type ProductPayload = Omit<Product, "createdAt">;

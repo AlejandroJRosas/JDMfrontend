@@ -3,9 +3,9 @@ import { InvoiceItem } from "components/InvoiceTable";
 export interface Bill {
   billId: number;
   billDate: string;
-  discountValue: number;
+  discountAmount: number;
+  subtotal: number | null;
   totalCost: number | null;
-  totalCostFinal: number | null;
   orderId: number;
   createdAt: string;
   items: InvoiceItem[];

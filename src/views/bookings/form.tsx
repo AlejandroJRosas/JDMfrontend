@@ -1,47 +1,47 @@
-import { FunctionComponent, useMemo, useState } from "react";
-import * as Yup from "yup";
-import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from "formik";
-import { IconEdit, IconTrash } from "@tabler/icons";
+import { FunctionComponent, useMemo, useState } from 'react'
+import * as Yup from 'yup'
+import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from 'formik'
+import { IconEdit, IconTrash } from '@tabler/icons'
 // material-ui
-import MainCard from "components/cards/MainCard";
-import { Button, FormControl, FormHelperText, TextField } from "@mui/material";
-import styled from "styled-components";
-import SelectField from "components/SelectField";
-import useServicesOptions from "core/services/use-services-options";
-import useClientsOptions from "core/clients/use-clients-options";
-import useVehiclesOptions from "core/vehicles/use-vehicles-options";
-import { IconCirclePlus } from "@tabler/icons";
-import useAgenciesOptions from "core/agencies/use-agencies-options";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import useRecomendations from "./use-recommendations";
-import RecommendedServices from "./recommendedServices";
+import MainCard from 'components/cards/MainCard'
+import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
+import styled from 'styled-components'
+import SelectField from 'components/SelectField'
+import useServicesOptions from 'core/services/use-services-options'
+import useClientsOptions from 'services/clients/_utils/use-clients-options'
+import useVehiclesOptions from 'core/vehicles/use-vehicles-options'
+import { IconCirclePlus } from '@tabler/icons'
+import useAgenciesOptions from 'core/agencies/use-agencies-options'
+import { DateTimePicker } from '@mui/x-date-pickers'
+import dayjs from 'dayjs'
+import useRecomendations from './use-recommendations'
+import RecommendedServices from './recommendedServices'
 
-const USE_AUTOCOMPLETES = false;
+const USE_AUTOCOMPLETES = false
 
 const Form: FunctionComponent<Props> = ({
   className,
   title,
   onSubmit,
   initialValues,
-  isUpdate,
+  isUpdate
 }) => {
   const [clientDni, setClientDni] = useState<string | null>(
     initialValues.clientDni
-  );
+  )
   const [agencyRif, setAgencyRif] = useState<string | null>(
     initialValues.agencyRif
-  );
+  )
 
-  const clientOptions = useClientsOptions();
-  const agenciesOptions = useAgenciesOptions();
+  const clientOptions = useClientsOptions()
+  const agenciesOptions = useAgenciesOptions()
   const serviceOptions = useServicesOptions({
     onlyForAgencyRif: agencyRif,
-    includeServicesIds: initialValues.servicesIds,
-  });
-  const vehicleOptions = useVehiclesOptions(clientDni);
-  const [licensePlate, setLicensePlate] = useState<string | null>();
-  const useValidationSchema = useValidationScheme();
+    includeServicesIds: initialValues.servicesIds
+  })
+  const vehicleOptions = useVehiclesOptions(clientDni)
+  const [licensePlate, setLicensePlate] = useState<string | null>()
+  const useValidationSchema = useValidationScheme()
 
   return (
     <div className={className}>
@@ -60,72 +60,82 @@ const Form: FunctionComponent<Props> = ({
           handleSubmit,
           isSubmitting,
           touched,
-          values,
+          values
         }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <div className="container-form-employees">
-              <MainCard className={"form-data"} title={title}>
-
-              <FormControl className="form-data field-form"
-              error={touched.expirationDate && !!errors.expirationDate}
-              fullWidth
-              >
-                <DateTimePicker
-                  label="Fecha de expiración"
-                  value={
-                    dayjs(values.expirationDate)
-                  }
-                  onChange={(newValue: any) => {
-                    const newValueFormatted = newValue.format("DD-MM-YYYY HH:mm:ss");//'DD-MM-AAAA HH:MM:SS'
-                    console.log(newValueFormatted);
-                    handleChange({
-                      target: {
-                        name: "expirationDate",
-                        id: "expirationDate",
-                        value: newValueFormatted || null,
-                      } as any,
-                    } as any);
-                  }}
-                />
-                {(touched.expirationDate && !!errors.expirationDate) && (
-                  <FormHelperText error>{touched.expirationDate ? errors.expirationDate : ""}</FormHelperText>
-                )}
-              </FormControl>
-                
-                <FormControl className="field-form" fullWidth>
-                  <SelectField
-                    className="field-form"
-                    name="clientDni"
-                    onChange={(e) => {
-                      handleChange(e);
-                      setClientDni(e.target.value as string);
+            <div className='container-form-employees'>
+              <MainCard className={'form-data'} title={title}>
+                <FormControl
+                  className='form-data field-form'
+                  error={touched.expirationDate && !!errors.expirationDate}
+                  fullWidth
+                >
+                  <DateTimePicker
+                    label='Fecha de expiración'
+                    value={dayjs(values.expirationDate)}
+                    onChange={(newValue: any) => {
+                      const newValueFormatted = newValue.format(
+                        'DD-MM-YYYY HH:mm:ss'
+                      ) //'DD-MM-AAAA HH:MM:SS'
+                      console.log(newValueFormatted)
+                      handleChange({
+                        target: {
+                          name: 'expirationDate',
+                          id: 'expirationDate',
+                          value: newValueFormatted || null
+                        } as any
+                      } as any)
                     }}
-                    label="Cliente"
+                  />
+                  {touched.expirationDate && !!errors.expirationDate && (
+                    <FormHelperText error>
+                      {touched.expirationDate ? errors.expirationDate : ''}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+
+                <FormControl className='field-form' fullWidth>
+                  <SelectField
+                    className='field-form'
+                    name='clientDni'
+                    onChange={(e) => {
+                      handleChange(e)
+                      setClientDni(e.target.value as string)
+                    }}
+                    label='Cliente'
                     onBlur={handleBlur}
                     options={clientOptions}
-                    helperText={touched.clientDni ? errors.clientDni : ""}
+                    helperText={touched.clientDni ? errors.clientDni : ''}
                     error={touched.clientDni && !!errors.clientDni}
                     isAutocomplete={USE_AUTOCOMPLETES}
                     value={clientDni}
                   />
                 </FormControl>
                 {(!!clientDni || !!touched.licensePlate) && (
-                  <FormControl className="field-form" fullWidth>
+                  <FormControl className='field-form' fullWidth>
                     <SelectField
                       disabled={!clientDni && !touched.licensePlate}
-                      className="field-form"
-                      name="licensePlate"
+                      className='field-form'
+                      name='licensePlate'
                       onChange={(e) => {
-                        handleChange(e);
-                        setLicensePlate(e.target.value as string);
+                        handleChange(e)
+                        setLicensePlate(e.target.value as string)
                       }}
                       onBlur={handleBlur}
-                      label="Matricula"
+                      label='Matricula'
                       options={vehicleOptions}
                       helperText={
-                        (!vehicleOptions.length) ? "Este cliente no tiene vehiculos" : (touched.licensePlate ? errors.licensePlate : "")
+                        !vehicleOptions.length
+                          ? 'Este cliente no tiene vehiculos'
+                          : touched.licensePlate
+                          ? errors.licensePlate
+                          : ''
                       }
-                      error={(!vehicleOptions.length) ? true : (touched.licensePlate && !!errors.licensePlate)}
+                      error={
+                        !vehicleOptions.length
+                          ? true
+                          : touched.licensePlate && !!errors.licensePlate
+                      }
                       isAutocomplete={USE_AUTOCOMPLETES}
                       value={values.licensePlate}
                     />
@@ -144,18 +154,18 @@ const Form: FunctionComponent<Props> = ({
                     name="licensePlate"
                   />
                 </FormControl> */}
-                <FormControl className="field-form" fullWidth>
+                <FormControl className='field-form' fullWidth>
                   <SelectField
-                    className="field-form"
-                    name="agencyRif"
+                    className='field-form'
+                    name='agencyRif'
                     onChange={(e) => {
-                      handleChange(e);
-                      setAgencyRif(e.target.value as string);
+                      handleChange(e)
+                      setAgencyRif(e.target.value as string)
                     }}
-                    label="Agencia"
+                    label='Agencia'
                     onBlur={handleBlur}
                     options={agenciesOptions}
-                    helperText={touched.agencyRif ? errors.agencyRif : ""}
+                    helperText={touched.agencyRif ? errors.agencyRif : ''}
                     error={touched.agencyRif && !!errors.agencyRif}
                     isAutocomplete={USE_AUTOCOMPLETES}
                     value={agencyRif}
@@ -164,110 +174,119 @@ const Form: FunctionComponent<Props> = ({
               </MainCard>
 
               <MainCard
-                className={"form-data"}
-                headerClass={"page-header-container"}
+                className={'form-data'}
+                headerClass={'page-header-container'}
                 title={
-                  <div className={"page-header"}>
+                  <div className={'page-header'}>
                     <span>Servicios reservados</span>
                   </div>
                 }
               >
-                <div className={"a"}>
-                  {
-                    (agencyRif && serviceOptions.length) ? (
-                      <FieldArray name="servicesIds">
-                        {({ insert, remove, push }) => (
-                          <div>
-                            {values.servicesIds.length > 0 &&
-                              values.servicesIds.map((speciality, index) => (
-                                <div
-                                  key={`service-${index}`}
-                                  className={"service-list"}
+                <div className={'a'}>
+                  {agencyRif && serviceOptions.length ? (
+                    <FieldArray name='servicesIds'>
+                      {({ insert, remove, push }) => (
+                        <div>
+                          {values.servicesIds.length > 0 &&
+                            values.servicesIds.map((speciality, index) => (
+                              <div
+                                key={`service-${index}`}
+                                className={'service-list'}
+                              >
+                                <FormControl
+                                  className='field-form2'
+                                  error={
+                                    !!touched.servicesIds &&
+                                    !!errors.servicesIds?.[index]
+                                  }
+                                  fullWidth
                                 >
-                                  <FormControl className="field-form2"
-                                    error={!!touched.servicesIds && !!errors.servicesIds?.[index]}
-                                    fullWidth>
-                                    <div className="field-form2-with-error">
-                                      <Field
-                                        name={`servicesIds.${index}`}
-                                        as={SelectField}
-                                        type="text"
-                                        className="field-form2-field"
-                                        label={`Servicio ${index + 1}`}
-                                        fullWidth
-                                        isAutocomplete={USE_AUTOCOMPLETES}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.servicesIds[index]}
-                                        options={serviceOptions}
-                                      />
-                                      <ErrorMessage
-                                        name={`servicesIds.${index}`}
-                                        component="div"
-                                        className="field-error"
-                                      />
-                                    </div>
-                                    <Button
-                                      color="secondary"
-                                      size="small"
-                                      startIcon={<IconTrash />}
-                                      onClick={() => remove(index)}
-                                    >
-                                      Eliminar
-                                    </Button>
-                                  </FormControl>
-                                </div>
-                              ))}
-                            <Button
-                              type="button"
-                              color="primary"
-                              size="small"
-                              variant={"outlined"}
-                              onClick={() => push(0)}
-                              startIcon={<IconCirclePlus />}
-                            >
-                              Añadir
-                            </Button>
-                          </div>
-                        )}
-                      </FieldArray>
-                    ) : (
-                        (!serviceOptions.length) ?
-                          <span>La agencia seleccionada no presta ningun servicio</span>
-                          : <span>Seleccione una agencia para poder ver los servicios disponibles</span>
-                    )
-                  }
+                                  <div className='field-form2-with-error'>
+                                    <Field
+                                      name={`servicesIds.${index}`}
+                                      as={SelectField}
+                                      type='text'
+                                      className='field-form2-field'
+                                      label={`Servicio ${index + 1}`}
+                                      fullWidth
+                                      isAutocomplete={USE_AUTOCOMPLETES}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      value={values.servicesIds[index]}
+                                      options={serviceOptions}
+                                    />
+                                    <ErrorMessage
+                                      name={`servicesIds.${index}`}
+                                      component='div'
+                                      className='field-error'
+                                    />
+                                  </div>
+                                  <Button
+                                    color='secondary'
+                                    size='small'
+                                    startIcon={<IconTrash />}
+                                    onClick={() => remove(index)}
+                                  >
+                                    Eliminar
+                                  </Button>
+                                </FormControl>
+                              </div>
+                            ))}
+                          <Button
+                            type='button'
+                            color='primary'
+                            size='small'
+                            variant={'outlined'}
+                            onClick={() => push(0)}
+                            startIcon={<IconCirclePlus />}
+                          >
+                            Añadir
+                          </Button>
+                        </div>
+                      )}
+                    </FieldArray>
+                  ) : !serviceOptions.length ? (
+                    <span>
+                      La agencia seleccionada no presta ningun servicio
+                    </span>
+                  ) : (
+                    <span>
+                      Seleccione una agencia para poder ver los servicios
+                      disponibles
+                    </span>
+                  )}
 
                   <FormControl
-                    className="field-form2"
+                    className='field-form2'
                     error={!!touched.servicesIds && !!errors.servicesIds}
                   >
-                    {
-                      !!touched.servicesIds && !!errors.servicesIds &&
-                      <FormHelperText error>{errors.servicesIds}</FormHelperText>
-                    }
+                    {!!touched.servicesIds && !!errors.servicesIds && (
+                      <FormHelperText error>
+                        {errors.servicesIds}
+                      </FormHelperText>
+                    )}
                   </FormControl>
                 </div>
               </MainCard>
-              <div className="form-data">
+              <div className='form-data'>
                 <RecommendedServices
-                  className={""}
+                  className={''}
                   agencyRif={agencyRif || ''}
                   onSubmit={() => {}}
                   licensePlate={licensePlate || ''}
                   initialValues={{
-                    licensePlate: "",
+                    licensePlate: '',
                     mileage: 0,
-                    submit: null,
+                    submit: null
                   }}
                 />
               </div>
             </div>
-            <MainCard className={"form-data flex-column"}>
+            <MainCard className={'form-data flex-column'}>
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant="outlined" type="submit" color="primary">
+              <Button variant='outlined' type='submit' color='primary'>
                 Guardar
               </Button>
             </MainCard>
@@ -275,51 +294,51 @@ const Form: FunctionComponent<Props> = ({
         )}
       </Formik>
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  isUpdate?: boolean;
-  className?: string;
-  onSubmit: OnSubmit;
-  title: string;
-  initialValues: FormValues;
+  isUpdate?: boolean
+  className?: string
+  onSubmit: OnSubmit
+  title: string
+  initialValues: FormValues
 }
 
 export type FormValues = {
-  expirationDate: string;
-  clientDni: string | null;
-  agencyRif: string | null;
-  licensePlate: string | null;
-  servicesIds: number[];
-  submit: string | null;
-};
+  expirationDate: string
+  clientDni: string | null
+  agencyRif: string | null
+  licensePlate: string | null
+  servicesIds: number[]
+  submit: string | null
+}
 
 export type OnSubmit = (
   values: FormValues,
   helpers: FormikHelpers<FormValues>
-) => void | Promise<any>;
+) => void | Promise<any>
 
 function useValidationScheme() {
   return useMemo(() => {
     return Yup.object().shape({
-      expirationDate: Yup.string().required("La fecha es requerida"),
-      licensePlate: Yup.string().typeError('La matricula es invalida').required("La matricula es requerida"),
+      expirationDate: Yup.string().required('La fecha es requerida'),
+      licensePlate: Yup.string()
+        .typeError('La matricula es invalida')
+        .required('La matricula es requerida'),
       clientDni: Yup.string()
         .max(16)
-        .required("La cédula del cliente es requerida"),
-      agencyRif: Yup.string()
-        .max(32)
-        .required("La agencia es requerida"),
+        .required('La cédula del cliente es requerida'),
+      agencyRif: Yup.string().max(32).required('La agencia es requerida'),
       servicesIds: Yup.array().of(
         Yup.number().test(
-          "not-zero",
-          "Seleccione un servicio o elimine este campo",
+          'not-zero',
+          'Seleccione un servicio o elimine este campo',
           (value) => value !== 0
         )
-      ),
+      )
     })
-  }, []);
+  }, [])
 }
 
 export default styled(Form)`
@@ -420,4 +439,4 @@ export default styled(Form)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

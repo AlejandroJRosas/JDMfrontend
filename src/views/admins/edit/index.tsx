@@ -1,76 +1,90 @@
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback } from 'react'
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import {  Typography } from '@mui/material';
-import styled from 'styled-components';
-import BackendError from 'exceptions/backend-error';
-import { useNavigate } from 'react-router';
-import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
-import Form, { FormValues } from '../form';
-import editState from 'services/states/edit-state';
-import useStateById from './use-state-by-id';
-import useStateId from './use-state-id';
-import { FormikHelpers } from 'formik';
+import MainCard from 'components/cards/MainCard'
+import { Typography } from '@mui/material'
+import styled from 'styled-components'
+import BackendError from 'exceptions/backend-error'
+import { useNavigate } from 'react-router'
+import {
+  setErrorMessage,
+  setIsLoading,
+  setSuccessMessage
+} from 'store/customizationSlice'
+import { useAppDispatch } from '../../../store/index'
+import Form, { FormValues } from '../form'
+import editAdmin from 'services/admins/edit-admin'
+import useAdminById from './use-admin-by-id'
+import useAdminId from './use-admin-id'
+import { FormikHelpers } from 'formik'
 
-const EditState: FunctionComponent<Props> = ({className}) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const stateId = useStateId();
-  const state = useStateById(stateId);
+const EditAdmin: FunctionComponent<Props> = ({ className }) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const adminId = useAdminId()
+  const admin = useAdminById(adminId)
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
-    try {
-      dispatch(setIsLoading(true));
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
-      await editState(stateId!, values);
-      navigate('/states');
-      dispatch(setSuccessMessage(`Estado ${values.name} editado correctamente`));
-    } catch (error) {
-      if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
-        dispatch(setErrorMessage(error.getMessage()));
+  const onSubmit = useCallback(
+    async (
+      values: any,
+      { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>
+    ) => {
+      try {
+        dispatch(setIsLoading(true))
+        setErrors({})
+        setStatus({})
+        setSubmitting(true)
+        await editAdmin(adminId!, values)
+        navigate('/business/admins')
+        dispatch(
+          setSuccessMessage(
+            `Administrador ${values.name} editado correctamente`
+          )
+        )
+      } catch (error) {
+        if (error instanceof BackendError) {
+          setErrors({
+            ...error.getFieldErrorsMessages(),
+            submit: error.getMessage()
+          })
+          dispatch(setErrorMessage(error.getMessage()))
+        }
+        setStatus({ success: false })
+      } finally {
+        setSubmitting(false)
+        dispatch(setIsLoading(false))
       }
-      setStatus({ success: false });
-    } finally {
-      setSubmitting(false);
-      dispatch(setIsLoading(false));
-    }
-  }, [dispatch, navigate, stateId]);
+    },
+    [dispatch, navigate, adminId]
+  )
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
-          Estados
+        <Typography variant='h3' component='h3'>
+          Administradores
         </Typography>
       </MainCard>
-      {
-        state && (
-          <Form
-            initialValues={{
-              name: state.name,
-              submit: null
-            }}
-            title={'Editar estado'}
-            onSubmit={onSubmit}
-          />
-        )
-      }
+      {admin && (
+        <Form
+          initialValues={{
+            name: admin.name,
+            email: admin.email,
+            password: admin.password,
+            submit: null
+          }}
+          title={'Editar Administrador'}
+          onSubmit={onSubmit}
+        />
+      )}
     </div>
-  );
-};
-
-interface Props {
-  className?: string;
+  )
 }
 
-export default styled(EditState)`
+interface Props {
+  className?: string
+}
+
+export default styled(EditAdmin)`
   display: flex;
   flex-direction: column;
 
@@ -92,5 +106,4 @@ export default styled(EditState)`
     display: flex;
     flex-direction: row;
   }
-`;
-
+`

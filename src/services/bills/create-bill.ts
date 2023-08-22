@@ -23,5 +23,5 @@ export default async function createBill(body: BillPayload): Promise<Bill> {
 
 export type BillPayload = Omit<
   Bill,
-  "billId" | "discountValue" | "totalCost" | "createdAt"
+  "billId" | "totalCost" | "createdAt"
 >;

@@ -1,23 +1,23 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback } from 'react'
 // material-ui
-import styled from "styled-components";
-import MainCard from "components/cards/MainCard";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router";
-import BackendError from "exceptions/backend-error";
-import createBill from "services/bills/create-bill";
+import styled from 'styled-components'
+import MainCard from 'components/cards/MainCard'
+import { Typography } from '@mui/material'
+import { useNavigate } from 'react-router'
+import BackendError from 'exceptions/backend-error'
+import createBill from 'services/bills/create-bill'
 import {
   setErrorMessage,
   setIsLoading,
-  setSuccessMessage,
-} from "store/customizationSlice";
-import { useAppDispatch } from "../../store/index";
-import Form, { FormValues } from "./form";
-import { FormikHelpers } from "formik";
+  setSuccessMessage
+} from 'store/customizationSlice'
+import { useAppDispatch } from '../../store/index'
+import Form, { FormValues } from './form'
+import { FormikHelpers } from 'formik'
 
 const CreateBill: FunctionComponent<Props> = ({ className }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const onSubmit = useCallback(
     async (
@@ -25,34 +25,34 @@ const CreateBill: FunctionComponent<Props> = ({ className }) => {
       { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>
     ) => {
       try {
-        dispatch(setIsLoading(true));
-        setErrors({});
-        setStatus({});
-        setSubmitting(true);
-        await createBill(values);
-        navigate("/bills");
-        dispatch(setSuccessMessage(`Factura creada correctamente`));
+        dispatch(setIsLoading(true))
+        setErrors({})
+        setStatus({})
+        setSubmitting(true)
+        await createBill(values)
+        navigate('/clientela/bills')
+        dispatch(setSuccessMessage(`Factura creada correctamente`))
       } catch (error) {
         if (error instanceof BackendError) {
           setErrors({
             ...error.getFieldErrorsMessages(),
-            submit: error.getMessage(),
-          });
-          dispatch(setErrorMessage(error.getMessage()));
+            submit: error.getMessage()
+          })
+          dispatch(setErrorMessage(error.getMessage()))
         }
-        setStatus({ success: false });
+        setStatus({ success: false })
       } finally {
-        dispatch(setIsLoading(false));
-        setSubmitting(false);
+        dispatch(setIsLoading(false))
+        setSubmitting(false)
       }
     },
     [dispatch, navigate]
-  );
+  )
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
+        <Typography variant='h3' component='h3'>
           Facturas
         </Typography>
       </MainCard>
@@ -60,17 +60,17 @@ const CreateBill: FunctionComponent<Props> = ({ className }) => {
       <Form
         initialValues={{
           orderId: null,
-          submit: null,
+          submit: null
         }}
-        title={"Crear factura"}
+        title={'Crear factura'}
         onSubmit={onSubmit}
       />
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(CreateBill)`
@@ -95,4 +95,4 @@ export default styled(CreateBill)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

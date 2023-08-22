@@ -3,6 +3,7 @@ import { FormikHelpers } from "formik";
 
 
 export type FormValues = {
+  clientId: number;
   entryTime: string;
   estimatedDeparture: string;
   bookingId: number;

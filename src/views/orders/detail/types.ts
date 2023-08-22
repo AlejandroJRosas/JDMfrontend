@@ -1,4 +1,4 @@
-import { Order } from 'core/orders/types';
+import { Order } from 'services/orders/types';
 
 export interface Props {
   className?: string;

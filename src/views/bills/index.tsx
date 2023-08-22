@@ -1,35 +1,35 @@
-import { FunctionComponent, useCallback } from "react";
-import Table from "./table";
-import usePaginate from "./use-paginate";
-import { useNavigate } from "react-router";
-import { styled } from "styled-components";
-import { IconCirclePlus } from "@tabler/icons";
-import MainCard from "components/cards/MainCard";
-import { Button, Typography } from "@mui/material";
+import { FunctionComponent, useCallback } from 'react'
+import Table from './table'
+import usePaginate from './use-paginate'
+import { useNavigate } from 'react-router'
+import { styled } from 'styled-components'
+import { IconCirclePlus } from '@tabler/icons'
+import MainCard from 'components/cards/MainCard'
+import { Button, Typography } from '@mui/material'
 
 const BillsPage: FunctionComponent<Props> = ({ className }) => {
-  const navigate = useNavigate();
-  const { bills, paginate, setPage, fetchBills } = usePaginate();
+  const navigate = useNavigate()
+  const { bills, paginate, setPage, fetchBills } = usePaginate()
   const goToCreate = useCallback(() => {
-    navigate("/bills/create");
-  }, [navigate]);
+    navigate('/clientela/bills/create')
+  }, [navigate])
 
   return (
     <MainCard
       className={className}
-      headerClass={"page-header"}
+      headerClass={'page-header'}
       title={
-        <div className={"page-header"}>
-          <Typography variant="h3" className={"title-header"}>
+        <div className={'page-header'}>
+          <Typography variant='h3' className={'title-header'}>
             Facturas
           </Typography>
           <Button
-            color="primary"
-            variant={"outlined"}
+            color='primary'
+            variant={'outlined'}
             onClick={goToCreate}
             startIcon={<IconCirclePlus />}
           >
-            Crear
+            Emitir Factura
           </Button>
         </div>
       }
@@ -41,11 +41,11 @@ const BillsPage: FunctionComponent<Props> = ({ className }) => {
         fetchItems={fetchBills}
       />
     </MainCard>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(BillsPage)`
@@ -60,4 +60,4 @@ export default styled(BillsPage)`
     justify-content: space-between;
     flex-direction: row;
   }
-`;
+`

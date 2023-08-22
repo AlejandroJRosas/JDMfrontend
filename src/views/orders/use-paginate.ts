@@ -5,7 +5,7 @@ import { PaginateData } from 'services/types';
 import { useAppDispatch } from 'store';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
-import { Order } from 'core/orders/types';
+import { Order } from 'services/orders/types';
 
 export default function usePaginate() {
   const dispatch = useAppDispatch();

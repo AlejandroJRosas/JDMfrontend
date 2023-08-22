@@ -1,15 +1,19 @@
-import { FunctionComponent } from 'react';
-import * as Yup from 'yup';
-import { Formik, FormikHelpers } from 'formik';
+import { FunctionComponent } from 'react'
+import * as Yup from 'yup'
+import { Formik, FormikHelpers } from 'formik'
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
-import styled from 'styled-components';
+import MainCard from 'components/cards/MainCard'
+import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
+import styled from 'styled-components'
 
-const USE_AUTOCOMPLETES = false;
+const USE_AUTOCOMPLETES = false
 
-const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
-
+const Form: FunctionComponent<Props> = ({
+  className,
+  title,
+  onSubmit,
+  initialValues
+}) => {
   return (
     <div className={className}>
       <Formik
@@ -17,63 +21,99 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         validateOnBlur={false}
         validateOnMount={false}
         initialValues={initialValues}
-        validationSchema={
-          Yup.object().shape({
-            name: Yup.string().max(30).required('El nombre es requerido'),
-          })
-        }
+        validationSchema={Yup.object().shape({
+          name: Yup.string().max(30).required('El nombre es requerido'),
+          email: Yup.string()
+            .email('Debe ingresar un correo electrónico valido')
+            .required('El correo electrónico es requerido'),
+          password: Yup.string().max(30).required('Una contraseña es requerida')
+        })}
         onSubmit={onSubmit as any}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <MainCard className={'form-data'} title={title}>
               <FormControl fullWidth>
                 <TextField
-                  id="name"
-                  label="Nombre de estado"
-                  variant="outlined"
+                  id='name'
+                  label='Nombre de Administrador'
+                  variant='outlined'
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.name}
                   helperText={touched.name ? errors.name : ''}
                   error={touched.name && !!errors.name}
-                  name="name"
+                  name='name'
+                />
+              </FormControl>
+              <FormControl className='field-form' fullWidth>
+                <TextField
+                  id='email'
+                  label='Correo electrónico'
+                  variant='outlined'
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  helperText={touched.email ? errors.email : ''}
+                  error={touched.email && !!errors.email}
+                  name='email'
+                />
+              </FormControl>
+              <FormControl className='field-form' fullWidth>
+                <TextField
+                  id='password'
+                  label='Contraseña'
+                  variant='outlined'
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.password}
+                  helperText={touched.password ? errors.password : ''}
+                  error={touched.password && !!errors.password}
+                  name='password'
                 />
               </FormControl>
             </MainCard>
             <MainCard className={'form-data flex-column'}>
               {errors.submit && (
-                  <FormHelperText error>{errors.submit}</FormHelperText>
+                <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant="outlined" type="submit" color="primary">
+              <Button variant='outlined' type='submit' color='primary'>
                 Guardar
               </Button>
             </MainCard>
-
           </form>
         )}
       </Formik>
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
-  onSubmit: OnSubmit;
-  title: string;
-  initialValues: FormValues;
+  className?: string
+  onSubmit: OnSubmit
+  title: string
+  initialValues: FormValues
 }
 
 export type FormValues = {
-  name: string;
-  submit: string | null;
-};
+  name: string
+  email: string
+  password: string
+  submit: string | null
+}
 
 export type OnSubmit = (
   values: FormValues,
   helpers: FormikHelpers<FormValues>
-) => void | Promise<any>;
-
+) => void | Promise<any>
 
 export default styled(Form)`
   display: flex;
@@ -82,6 +122,10 @@ export default styled(Form)`
   .flex-column {
     display: flex;
     flex-direction: column;
+  }
+
+  .field-form {
+    margin: 6px 0px;
   }
 
   .form-data {
@@ -97,4 +141,4 @@ export default styled(Form)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

@@ -1,127 +1,129 @@
-import { FunctionComponent, useCallback, useState } from "react";
-import * as Yup from "yup";
-import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from "formik";
-import { IconEdit, IconTrash } from "@tabler/icons";
+import { FunctionComponent, useCallback, useState } from 'react'
+import * as Yup from 'yup'
+import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from 'formik'
+import { IconEdit, IconTrash } from '@tabler/icons'
 // material-ui
-import MainCard from "components/cards/MainCard";
-import { Button, FormControl, FormHelperText, TextField } from "@mui/material";
-import styled from "styled-components";
-import SelectField from "components/SelectField";
-import useServicesOptions from "core/services/use-services-options";
-import useClientsOptions from "core/clients/use-clients-options";
-import useVehiclesOptions from "core/vehicles/use-vehicles-options";
-import { IconCirclePlus } from "@tabler/icons";
-import useRecomendations from "./use-recommendations";
-import { useAppDispatch } from "../../store/index";
+import MainCard from 'components/cards/MainCard'
+import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
+import styled from 'styled-components'
+import SelectField from 'components/SelectField'
+import useServicesOptions from 'core/services/use-services-options'
+import useClientsOptions from 'services/clients/_utils/use-clients-options'
+import useVehiclesOptions from 'core/vehicles/use-vehicles-options'
+import { IconCirclePlus } from '@tabler/icons'
+import useRecomendations from './use-recommendations'
+import { useAppDispatch } from '../../store/index'
 import {
   setErrorMessage,
   setIsLoading,
-  setSuccessMessage,
-} from "store/customizationSlice";
-import BackendError from "exceptions/backend-error";
-import DynamicTable from "components/DynamicTable";
-const USE_AUTOCOMPLETES = false;
+  setSuccessMessage
+} from 'store/customizationSlice'
+import BackendError from 'exceptions/backend-error'
+import DynamicTable from 'components/DynamicTable'
+const USE_AUTOCOMPLETES = false
 
 const RecommendedServices: FunctionComponent<Props> = ({
   className,
   licensePlate,
   agencyRif,
-  initialValues,
+  initialValues
 }) => {
-  const dispatch = useAppDispatch();
-  
+  const dispatch = useAppDispatch()
+
   const { recommendations, setMileage, mileage, fetchRecommendations } =
-    useRecomendations(licensePlate, agencyRif);
+    useRecomendations(licensePlate, agencyRif)
 
   const dummyServices = [
     {
       serviceId: 1,
-      description: "string",
+      description: 'string',
       totalCost: 25,
       mileage: 45,
-      useTime: 4,
+      useTime: 4
     },
     {
       serviceId: 1,
-      description: "string",
+      description: 'string',
       totalCost: 25,
       mileage: 45,
-      useTime: 4,
+      useTime: 4
     },
     {
       serviceId: 1,
-      description: "string",
+      description: 'string',
       totalCost: 25,
       mileage: 45,
-      useTime: 4,
-    },
-  ];
+      useTime: 4
+    }
+  ]
 
   return (
     <div className={className}>
-              <MainCard className="form-data"
-                title={"Buscar servicios recomendados"}
-              >
-                <div className="form-data2" >
-                  <FormControl className="field-form" fullWidth>
-                    <TextField
-                      id="mileage"
-                      label="Kilometraje"
-                      variant="outlined"
-                      onBlur={() => {}}
-                      onChange={(e) => {
-                        setMileage(e.target.value as any);
-                      }}
-                      value={mileage}
-                      name="mileage"
-                    />
-                  </FormControl>
-                </div>
-                <hr />
-                {recommendations.length ? <DynamicTable
-                  headers={[
-                    {
-                      columnLabel: "Id",
-                      fieldName: "serviceId",
-                      cellAlignment: "left",
-                    },
-                    {
-                      columnLabel: "Descripcion",
-                      fieldName: "description",
-                      cellAlignment: "left",
-                    },
-                    {
-                      columnLabel: "Costo total",
-                      fieldName: "totalCost",
-                      cellAlignment: "left",
-                    },
-                  ]}
-                  rows={recommendations}
-                /> : "No hay servicios recomendados"}
-              </MainCard>
+      <MainCard className='form-data' title={'Buscar servicios recomendados'}>
+        <div className='form-data2'>
+          <FormControl className='field-form' fullWidth>
+            <TextField
+              id='mileage'
+              label='Kilometraje'
+              variant='outlined'
+              onBlur={() => {}}
+              onChange={(e) => {
+                setMileage(e.target.value as any)
+              }}
+              value={mileage}
+              name='mileage'
+            />
+          </FormControl>
+        </div>
+        <hr />
+        {recommendations.length ? (
+          <DynamicTable
+            headers={[
+              {
+                columnLabel: 'Id',
+                fieldName: 'serviceId',
+                cellAlignment: 'left'
+              },
+              {
+                columnLabel: 'Descripcion',
+                fieldName: 'description',
+                cellAlignment: 'left'
+              },
+              {
+                columnLabel: 'Costo total',
+                fieldName: 'totalCost',
+                cellAlignment: 'left'
+              }
+            ]}
+            rows={recommendations}
+          />
+        ) : (
+          'No hay servicios recomendados'
+        )}
+      </MainCard>
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  isUpdate?: boolean;
-  className?: string;
-  onSubmit: OnSubmit;
-  licensePlate: string | null;
-  agencyRif: string | null;
-  initialValues: FormValues;
+  isUpdate?: boolean
+  className?: string
+  onSubmit: OnSubmit
+  licensePlate: string | null
+  agencyRif: string | null
+  initialValues: FormValues
 }
 
 export type FormValues = {
-  mileage: number;
-  licensePlate: string;
-  submit: string | null;
-};
+  mileage: number
+  licensePlate: string
+  submit: string | null
+}
 
 export type OnSubmit = (
   values: FormValues,
   helpers: FormikHelpers<FormValues>
-) => void | Promise<any>;
+) => void | Promise<any>
 
 export default styled(RecommendedServices)`
   display: flex;
@@ -210,4 +212,4 @@ export default styled(RecommendedServices)`
     display: flex;
     flex-direction: row;
   }
-`;
+`
