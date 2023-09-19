@@ -7,10 +7,10 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/clients`;
 
-export default async function editClient(clientDni: string, body: ClientPayload): Promise<Client> {
+export default async function editClient(clientId: number, body: ClientPayload): Promise<Client> {
   try {
     const response = await axios.put<Client>(
-        `${URL}/${clientDni}`, body, {
+        `${URL}/${clientId}`, body, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }

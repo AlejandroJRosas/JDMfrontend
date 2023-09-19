@@ -6,7 +6,7 @@ import { getStorageData } from './getStorageData';
 import { setStorageData } from './setStorageData';
 import { clearStorageData } from './clearStorageData';
 
-const initialState: AuthState = hasStorageData() ? {
+export const initialState: AuthState = hasStorageData() ? {
   ...getStorageData(),
   isAuth: true,
 } : {
@@ -14,8 +14,6 @@ const initialState: AuthState = hasStorageData() ? {
   token: null,
   isAuth: false,
 };
-
-console.log('initial,state', hasStorageData(), initialState);
 
 export type LoginPayload = LoginResponse & { remember: boolean };
 
@@ -25,6 +23,7 @@ const authSlice = createSlice({
   reducers: {
     authUser(state, action: PayloadAction<LoginPayload>) {
       state.user = {
+        id: action.payload.id,
         email: action.payload.email,
         name: action.payload.name
       };
@@ -33,6 +32,7 @@ const authSlice = createSlice({
       if (action.payload.remember)
         setStorageData({
           user: {
+            id: action.payload.id,
             email: action.payload.email,
             name: action.payload.name
           },

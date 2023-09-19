@@ -1,9 +1,12 @@
 import { RouteObject } from 'react-router'
 
+//
+import GeneralBalance from 'views/general-balance'
 // Wallets
 import Wallets from 'views/wallets'
 import CreateWallet from 'views/wallets/create'
 import EditWallet from 'views/wallets/edit'
+// import DetailWallet from 'views/wallets/detail'
 // Movements
 import Movements from 'views/movements'
 import CreateMovement from 'views/movements/create'
@@ -83,6 +86,11 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'general',
     children: [
+      // General Balance
+      {
+        path: 'balance',
+        element: <GeneralBalance />
+      },
       // Wallets
       {
         path: 'wallets',
@@ -95,6 +103,10 @@ const GeneralRoutes: RouteObject[] = [
       {
         path: 'wallets/edit/:id',
         element: <EditWallet />
+      },
+      {
+        path: 'wallets/detail/:id'
+        // element: <DetailWallet />
       },
       // Movements
       {

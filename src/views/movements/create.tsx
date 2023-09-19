@@ -32,7 +32,9 @@ const CreateMovement: FunctionComponent<Props> = ({ className }) => {
         await createMovement({ ...values, amount: +values.amount })
         navigate('/general/movements')
         dispatch(
-          setSuccessMessage(`Movimiento ${values.id} creado correctamente`)
+          setSuccessMessage(
+            `Movimiento ${values.description} creado correctamente`
+          )
         )
       } catch (error) {
         if (error instanceof BackendError) {

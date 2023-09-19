@@ -2,11 +2,11 @@ import { FunctionComponent, useCallback } from 'react'
 import { styled } from 'styled-components'
 import OrderActivitiesCrud from 'core/order-activities/form/order-products-crud'
 import { FormControl } from '@mui/material'
-import { OrderActivity } from '../types'
-import { LocalOrderActivity } from '../form/types'
-import deleteOrderActivity from 'services/order-activities/delete-order-activity'
-import editOrderActivity from 'services/order-activities/edit-order-activity'
-import { OrderActivityFormValues } from '../form/form'
+import { OrderDetail } from '../types'
+import { LocalOrderDetail } from '../types'
+import deleteOrderDetail from 'services/order-activities/delete-order-activity'
+import editOrderDetail from 'services/order-activities/edit-order-activity'
+import { OrderDetailFormValues } from '../form/form'
 import createOrderActivity from 'services/order-activities/create-order-activity'
 import { useAppDispatch } from 'store'
 import {
@@ -15,27 +15,26 @@ import {
   setSuccessMessage
 } from 'store/customizationSlice'
 import BackendError from 'exceptions/backend-error'
-import { Booking } from 'core/bookings/types'
+// import { Booking } from 'core/bookings/types'
 
 const OrderActivitiesCrudWrapper: FunctionComponent<Props> = ({
   className,
   onRefresh,
   items,
-  booking,
   orderId
 }) => {
   const dispatch = useAppDispatch()
 
   const onDelete = useCallback(
-    async (orderActivity: LocalOrderActivity, index: number) => {
+    async (product: LocalOrderDetail, index: number) => {
       try {
         dispatch(setIsLoading(true))
-        await deleteOrderActivity(
-          orderId,
-          orderActivity.serviceId,
-          orderActivity.activityId
+        await deleteOrderDetail(orderId, product.productId, product.quantity)
+        dispatch(
+          setSuccessMessage(
+            `El producto de la orden ha sido eliminado correctamente`
+          )
         )
-        dispatch(setSuccessMessage(`Activdad de orden eliminada con éxito`))
       } catch (error) {
         if (error instanceof BackendError)
           dispatch(setErrorMessage(error.getMessage()))
@@ -49,20 +48,14 @@ const OrderActivitiesCrudWrapper: FunctionComponent<Props> = ({
 
   const onUpdate = useCallback(
     async (
-      orderActivity: LocalOrderActivity,
-      formValues: OrderActivityFormValues,
+      orderActivity: LocalOrderDetail,
+      formValues: OrderDetailFormValues,
       index: number
     ) => {
       try {
-        await editOrderActivity(
-          orderId,
-          orderActivity.serviceId,
-          orderActivity.activityId,
-          {
-            employeeDni: formValues.employeeDni!!,
-            hoursTaken: +formValues.hoursTaken
-          }
-        )
+        await editOrderDetail(orderId, orderActivity.productId, {
+          quantity: +formValues.quantity
+        })
       } catch (error) {
         if (error instanceof BackendError)
           dispatch(setErrorMessage(error.getMessage()))
@@ -75,14 +68,12 @@ const OrderActivitiesCrudWrapper: FunctionComponent<Props> = ({
   )
 
   const onCreate = useCallback(
-    async (formValues: OrderActivityFormValues) => {
+    async (formValues: OrderDetailFormValues) => {
       try {
         await createOrderActivity({
           orderId,
-          serviceId: +formValues.serviceId!!,
-          activityId: +formValues.activityId!!,
-          employeeDni: formValues.employeeDni!!,
-          hoursTaken: +formValues.hoursTaken
+          productId: +formValues.productId!!,
+          quantity: +formValues.quantity
         })
       } catch (error) {
         if (error instanceof BackendError)
@@ -98,7 +89,6 @@ const OrderActivitiesCrudWrapper: FunctionComponent<Props> = ({
   return (
     <FormControl className={className} fullWidth>
       <OrderActivitiesCrud
-        booking={booking}
         isParentUpdate={true}
         orderId={orderId}
         onDelete={onDelete}
@@ -114,8 +104,7 @@ interface Props {
   className?: string
   orderId: number
   onRefresh: () => void
-  booking: Booking
-  items: OrderActivity[]
+  items: OrderDetail[]
 }
 
 export default styled(OrderActivitiesCrudWrapper)``

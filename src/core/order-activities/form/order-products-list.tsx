@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import DynamicTable, { Header } from 'components/DynamicTable'
 import { IconButton } from '@mui/material'
 import { IconEdit, IconTrash } from '@tabler/icons'
-import { LocalOrderActivity } from './types'
+import { LocalOrderDetail } from '../types'
 
 const OrderProductsList: FunctionComponent<Props> = ({
   className,
@@ -19,7 +19,7 @@ const OrderProductsList: FunctionComponent<Props> = ({
     columnForParentId.push({
       columnLabel: 'Orden',
       cellAlignment: 'left',
-      onRender: (_: LocalOrderActivity) => orderId
+      onRender: (_: LocalOrderDetail) => orderId
     })
   }
 
@@ -29,7 +29,7 @@ const OrderProductsList: FunctionComponent<Props> = ({
         className={className}
         emptyState={
           <center className={'full-empty-state'}>
-            <p>No hay productos agregados</p>
+            <p>No se han añadido productos a la orden..</p>
           </center>
         }
         headers={[
@@ -41,7 +41,7 @@ const OrderProductsList: FunctionComponent<Props> = ({
           },
           {
             columnLabel: 'Producto',
-            fieldName: 'name',
+            fieldName: 'description',
             cellAlignment: 'left'
           },
           {
@@ -57,7 +57,7 @@ const OrderProductsList: FunctionComponent<Props> = ({
         ]}
         rows={items}
         components={[
-          (row: LocalOrderActivity, index: number) => (
+          (row: LocalOrderDetail, index: number) => (
             <IconButton
               key={`order-products-${index}-update`}
               color='primary'
@@ -68,7 +68,7 @@ const OrderProductsList: FunctionComponent<Props> = ({
               <IconEdit />
             </IconButton>
           ),
-          (row: LocalOrderActivity, index: number) => (
+          (row: LocalOrderDetail, index: number) => (
             <IconButton
               key={`order-products-${index}-delete`}
               color='secondary'
@@ -89,9 +89,9 @@ interface Props {
   orderId?: number | null
   className?: string
   isParentUpdate?: boolean
-  items: LocalOrderActivity[]
-  onEdit: (item: LocalOrderActivity, index: number) => void
-  onDelete: (item: LocalOrderActivity, index: number) => void
+  items: LocalOrderDetail[]
+  onEdit: (item: LocalOrderDetail, index: number) => void
+  onDelete: (item: LocalOrderDetail, index: number) => void
 }
 
 export default styled(OrderProductsList)`

@@ -28,7 +28,7 @@ export default function useClientsOptions(): SelectOption[] {
   }, [fetchClients]);
 
   return clients.map(client => ({
-    label: ('ID: '+client.clientId+' - '+client.name +' - '+client.mainPhone),
+    label: 'ID: '+client.clientId+' - '+client.name + (client.mainPhone?(' - '+client.mainPhone):''),
     value: client.clientId,
   }));
 }

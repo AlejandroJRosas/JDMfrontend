@@ -18,9 +18,9 @@ const ClientsPage: FunctionComponent<Props> = ({ className }) => {
   return (
     <MainCard
       className={className}
-      headerClass={'page-header'}
+      headerClass={'clients-header'}
       title={
-        <div className={'page-header'}>
+        <div className={'clients-header'}>
           <Typography variant='h3' className={'title-header'}>
             Clientes
           </Typography>
@@ -54,7 +54,7 @@ export default styled(ClientsPage)`
   display: flex;
   flex-direction: column;
 
-  .page-header {
+  .clients-header {
     flex: 1;
     width: 100%;
     display: flex;

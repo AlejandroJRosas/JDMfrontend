@@ -4,16 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 import { Product } from "services/products/types";
-import getAllProducts from "services/products/get-all-products";
+import getAllProducts, { Body } from "services/products/get-all-products";
 
-export default function useProductsOptions(): SelectOption[] {
+export default function useProductsOptions({ onlyOnStock }: Body): SelectOption[] {
   const [items, setItems] = useState<Product[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllProducts();
+      const response = await getAllProducts({ onlyOnStock });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,14 +21,14 @@ export default function useProductsOptions(): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, onlyOnStock]);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
   return items.map(item => ({
-    label: item.name,
+    label: item.productId + ' - ' + item.name + ' - STOCK: ' + item.quantity + ' - PRECIO: ' + item.price,
     value: item.productId,
   }));
 }

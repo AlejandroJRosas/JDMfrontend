@@ -11,12 +11,12 @@ import {
 } from '@mui/material'
 import { Props } from './types'
 import OrderActivitiesCrud from 'core/order-activities/crud'
-import useBookingById from 'core/bookings/use-booking-by-id'
+// import useBookingById from 'core/bookings/use-booking-by-id'
 import OrderProductsListWrapper from 'core/order-productos/order-products-list-wrapper'
 
 const Detail: FunctionComponent<Props> = ({ className, order, onRefresh }) => {
-  const booking = useBookingById(order.bookingId)
-  if (!booking) return <></>
+  // const booking = useBookingById(order.bookingId)
+  // if (!booking) return <></>
   return (
     <div className={className}>
       <div className={'container-form-services'}>
@@ -34,33 +34,19 @@ const Detail: FunctionComponent<Props> = ({ className, order, onRefresh }) => {
                 </TableRow>
                 <TableRow>
                   <TableCell>DNI Responsable retiro:</TableCell>
-                  <TableCell align='right'>{order.responsibleDni}</TableCell>
+                  <TableCell align='right'>{order.isClosed}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Nombre responsable retiro:</TableCell>
-                  <TableCell align='right'>{order.responsibleName}</TableCell>
+                  <TableCell align='right'>{order.walletId}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Fecha de entrada:</TableCell>
-                  <TableCell align='right'>{order.entryTime}</TableCell>
+                  <TableCell align='right'>{order.clientId}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Fecha de salida estimada:</TableCell>
-                  <TableCell align='right'>
-                    {order.estimatedDeparture}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Fecha de salida real:</TableCell>
-                  <TableCell align='right'>{order.realDeparture}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>ID de reserva:</TableCell>
-                  <TableCell align='right'>{order.bookingId}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>DNI de Analista:</TableCell>
-                  <TableCell align='right'>{order.employeeDni}</TableCell>
+                  <TableCell align='right'>{order.adminId}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Fecha de creacion:</TableCell>
@@ -74,10 +60,9 @@ const Detail: FunctionComponent<Props> = ({ className, order, onRefresh }) => {
           <OrderActivitiesCrud
             orderId={order.orderId}
             onRefresh={onRefresh}
-            booking={booking}
-            items={order.orderActivities}
+            items={order.orderDetails}
           />
-          <OrderProductsListWrapper items={order.orderProducts} />
+          <OrderProductsListWrapper items={order.orderDetails} />
         </div>
       </div>
     </div>

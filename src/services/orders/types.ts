@@ -1,20 +1,21 @@
 import { InvoiceItem } from "components/InvoiceTable";
-import { OrderActivity } from "core/order-activities/types";
+import { LocalOrderDetail, OrderDetail } from "core/order-activities/types";
 
 export interface Order {
   orderId: number;
   clientId: number;
+  walletId: number;
+  adminId: number;
   isClosed?: boolean;
   clientName?: string;
-  responsibleDni: string | null;
-  responsibleName: string | null;
-  entryTime: string;
-  estimatedDeparture: string;
-  realDeparture: string | null;
-  bookingId: number;
-  employeeDni: string;
-  createdAt: string;
+  totalAmount?: number;
   items: InvoiceItem[];
-  orderActivities: OrderActivity[];
-  orderProducts: any[];
+  orderDetails: OrderDetail[];
+  createdAt: string;
 }
+
+export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items' | 'orderDetails'> & {
+  products: LocalOrderDetail[];
+};
+
+export type OrderEditPayload = Pick<Order, 'clientId' | 'walletId'>;

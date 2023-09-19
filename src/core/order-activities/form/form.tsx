@@ -1,29 +1,34 @@
-import { FunctionComponent, useState } from 'react';
-import * as Yup from 'yup';
-import { Formik, FormikHelpers } from 'formik';
+import { FunctionComponent, useState } from 'react'
+import * as Yup from 'yup'
+import { Formik, FormikHelpers } from 'formik'
 // material-ui
-import { Button, FormControl, FormHelperText, InputAdornment, TextField } from '@mui/material';
-import styled from 'styled-components';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  TextField
+} from '@mui/material'
+import styled from 'styled-components'
 //import useServicesOptions from 'core/services/use-services-options';
-import SelectField from 'components/SelectField';
-import useEmployeesOptions from 'core/employees/use-employees-options';
-import useServicesOptions from 'core/services/use-services-options';
-import useActivitiesOptionsForServiceId from 'core/activities/use-activities-options-for-service-id';
+import SelectField from 'components/SelectField'
+// import useEmployeesOptions from 'core/employees/use-employees-options'
+import useProductsOptions from 'services/products/_utils/use-products-options'
+// import useActivitiesOptionsForServiceId from 'core/activities/use-activities-options-for-service-id'
 
-const USE_AUTOCOMPLETES = false;
+const USE_AUTOCOMPLETES = false
 
 const ActivitiesForm: FunctionComponent<Props> = ({
-  className, onSubmit, initialValues, isUpdate, isParentUpdate, agencyRif
+  className,
+  onSubmit,
+  initialValues,
+  isUpdate,
+  isParentUpdate
 }) => {
-  const isCreated = !isUpdate;
-  const servicesOptions = useServicesOptions({
-    onlyForAgencyRif: agencyRif,
-  });
-  const [serviceId, setServiceId] = useState<number | null>(initialValues.serviceId);
-  const [activityId, setActivityId] = useState<number | null>(initialValues.activityId);
-  const activitiesOptions = useActivitiesOptionsForServiceId(serviceId)
-  const employeesOptions = useEmployeesOptions({
-    onlyForAgencyRif: agencyRif,
+  const isCreated = !isUpdate
+
+  const productsOptions = useProductsOptions({
+    onlyOnStock: true
   })
 
   return (
@@ -33,141 +38,92 @@ const ActivitiesForm: FunctionComponent<Props> = ({
         validateOnChange={true}
         validateOnBlur={false}
         validateOnMount={false}
-        validationSchema={
-          Yup.object().shape({
-            activityId: Yup.number().required('La actividad es requerida'),
-            serviceId: Yup.number().required('El servicio es requerido'),
-            employeeDni: Yup.string().required('El empleado es requerido'),
-            hoursTaken: Yup.number().nullable(),
-          })
-        }
+        validationSchema={Yup.object().shape({
+          productId: Yup.number().required('El producto es requerido'),
+          quantity: Yup.number().min(1, 'La cantidad minima es 1')
+        })}
         onSubmit={onSubmit as any}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <FormControl
-              className="field-form"
+              className='field-form'
               fullWidth
               disabled={isParentUpdate && isUpdate}
             >
               <SelectField
-                className="field-form"
+                className='field-form'
                 fullWidth={true}
-                name="serviceId"
+                name='productId'
                 disabled={isParentUpdate && isUpdate}
-                onChange={(e) => {
-                  handleChange(e)
-                  setServiceId(e.target.value as number);
-                }}
+                onChange={handleChange}
                 onBlur={handleBlur}
-                label="Servicios"
-                options={servicesOptions}
-                helperText={touched.serviceId ? errors.serviceId : ''}
-                error={touched.serviceId && !!errors.serviceId}
+                label='Productos'
+                options={productsOptions}
+                helperText={touched.productId ? errors.productId : ''}
+                error={touched.productId && !!errors.productId}
                 isAutocomplete={USE_AUTOCOMPLETES}
-                value={values.serviceId}
+                value={values.productId}
               />
             </FormControl>
-            {
-              serviceId && (
-                <FormControl
-                  className="field-form"
-                  fullWidth
-                  disabled={isParentUpdate && isUpdate}
-                >
-                  <SelectField
-                    className="field-form"
-                    fullWidth={true}
-                    name="activityId"
-                    disabled={isParentUpdate && isUpdate}
-                    onChange={(e) => {
-                      handleChange(e)
-                      setActivityId(e.target.value as number);
-                    }}
-                    onBlur={handleBlur}
-                    label="Actividades"
-                    options={activitiesOptions}
-                    helperText={touched.activityId ? errors.activityId : ''}
-                    error={touched.activityId && !!errors.activityId}
-                    isAutocomplete={USE_AUTOCOMPLETES}
-                    value={values.activityId}
-                  />
-                </FormControl>
-              )
-            }
-            {
-              activityId && (
-                <FormControl
-                  className="field-form"
-                  fullWidth
-                >
-                  <SelectField
-                    className="field-form"
-                    fullWidth={true}
-                    name="employeeDni"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    label="Empleado"
-                    options={employeesOptions}
-                    helperText={touched.employeeDni ? errors.employeeDni : ''}
-                    error={touched.employeeDni && !!errors.employeeDni}
-                    isAutocomplete={USE_AUTOCOMPLETES}
-                    value={values.employeeDni}
-                  />
-                </FormControl>
-              )
-            }
-            <FormControl className="field-form" fullWidth>
+            <FormControl className='field-form' fullWidth>
               <TextField
-                id="hoursTaken"
-                label="Horas tomadas"
-                variant="outlined"
+                id='quantity'
+                label='Cantidad de Producto'
+                variant='outlined'
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.hoursTaken}
-                helperText={touched.hoursTaken ? errors.hoursTaken : ''}
-                error={touched.hoursTaken && !!errors.hoursTaken}
+                value={values.quantity}
+                helperText={touched.quantity ? errors.quantity : ''}
+                error={touched.quantity && !!errors.quantity}
                 InputProps={{
-                  endAdornment: <InputAdornment position="start">horas</InputAdornment>
+                  endAdornment: (
+                    <InputAdornment position='start'>Cantidad</InputAdornment>
+                  )
                 }}
-                name="hoursTaken"
+                name='quantity'
               />
             </FormControl>
             {errors.submit && (
-                <FormHelperText error>{errors.submit}</FormHelperText>
+              <FormHelperText error>{errors.submit}</FormHelperText>
             )}
-            <Button variant="outlined" type="submit" color="primary">
-              { isCreated ? 'Agregar' : 'Editar' }
+            <Button variant='outlined' type='submit' color='primary'>
+              {isCreated ? 'Agregar' : 'Editar'}
             </Button>
           </form>
         )}
       </Formik>
     </div>
-  );
-};
-
-interface Props {
-  className?: string;
-  onSubmit: OnSubmit;
-  initialValues: OrderActivityFormValues;
-  isUpdate?: boolean;
-  isParentUpdate?: boolean;
-  agencyRif: string;
+  )
 }
 
-export type OrderActivityFormValues = {
-  serviceId: number | null;
-  activityId: number | null;
-  employeeDni: string | null;
-  hoursTaken: number;
-  isParentUpdate?: boolean;
-  submit: string | null;
-};
+interface Props {
+  className?: string
+  onSubmit: OnSubmit
+  initialValues: OrderDetailFormValues
+  isUpdate?: boolean
+  isParentUpdate?: boolean
+}
+
+export type OrderDetailFormValues = {
+  productId: number | null
+  quantity: number
+  isParentUpdate?: boolean
+  submit: string | null
+}
 
 export type OnSubmit = (
-  values: OrderActivityFormValues,
-  helpers: FormikHelpers<OrderActivityFormValues>
-) => void | Promise<any>;
+  values: OrderDetailFormValues,
+  helpers: FormikHelpers<OrderDetailFormValues>
+) => void | Promise<any>
 
 export default styled(ActivitiesForm)`
   display: flex;
@@ -179,8 +135,8 @@ export default styled(ActivitiesForm)`
     grid-column-gap: 20px; /* espacio entre las columnas */
   }
 
-
-  @media screen and (max-width: 768px) { /* media query para dispositivos móviles */
+  @media screen and (max-width: 768px) {
+    /* media query para dispositivos móviles */
     .container-form-services {
       grid-template-columns: 1fr; /* una sola columna */
       grid-column-gap: 0; /* sin espacio entre columnas */
@@ -210,4 +166,4 @@ export default styled(ActivitiesForm)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

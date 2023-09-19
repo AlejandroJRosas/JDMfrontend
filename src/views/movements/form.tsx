@@ -7,6 +7,7 @@ import SelectField from 'components/SelectField'
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
 import styled from 'styled-components'
 import useWalletOptions from 'services/wallets/_utils/use-wallets-options'
+import { useNavigate } from 'react-router'
 
 const USE_AUTOCOMPLETE = false
 
@@ -17,6 +18,7 @@ const Form: FunctionComponent<Props> = ({
   initialValues
 }) => {
   const walletOptions = useWalletOptions()
+  const navigate = useNavigate()
   return (
     <div className={className}>
       <Formik
@@ -25,8 +27,13 @@ const Form: FunctionComponent<Props> = ({
         validateOnMount={false}
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          description: Yup.string().max(30).required('El nombre es requerido'),
+          description: Yup.string()
+            .max(30)
+            .required(
+              'Es necesario proveer una descripción para este movimiento'
+            ),
           amount: Yup.number()
+            .notOneOf([0], 'El monto no puede ser 0')
             .typeError('El precio es invalido')
             .required('El precio es requerido'),
           walletId: Yup.number().min(1, 'Debe seleccionar una Billetera')
@@ -44,6 +51,19 @@ const Form: FunctionComponent<Props> = ({
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <MainCard className={'form-data'} title={title}>
+              <SelectField
+                fullWidth={true}
+                className='field-form'
+                name='walletId'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label='Billetera'
+                options={walletOptions}
+                helperText={touched.walletId ? errors.walletId : ''}
+                error={touched.walletId && !!errors.walletId}
+                isAutocomplete={USE_AUTOCOMPLETE}
+                value={values.walletId}
+              />
               <FormControl className='field-form' fullWidth>
                 <TextField
                   id='description'
@@ -70,25 +90,22 @@ const Form: FunctionComponent<Props> = ({
                   name='amount'
                 />
               </FormControl>
-              <SelectField
-                fullWidth={true}
-                className='field-form'
-                name='walletId'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                label='Billetera'
-                options={walletOptions}
-                helperText={touched.walletId ? errors.walletId : ''}
-                error={touched.walletId && !!errors.walletId}
-                isAutocomplete={USE_AUTOCOMPLETE}
-                value={values.walletId}
-              />
             </MainCard>
             <MainCard className={'form-data flex-column'}>
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/general/movements')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>
@@ -125,6 +142,10 @@ export default styled(Form)`
   .flex-column {
     display: flex;
     flex-direction: column;
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .field-form {

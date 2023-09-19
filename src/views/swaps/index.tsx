@@ -20,9 +20,9 @@ const Swaps: FunctionComponent<Prop> = ({ className }) => {
   return (
     <MainCard
       className={className}
-      headerClass={'estados-header'}
+      headerClass={'swaps-header'}
       title={
-        <div className={'estados-header'}>
+        <div className={'swaps-header'}>
           <Typography variant='h3' className={'title-header'}>
             Cambios
           </Typography>
@@ -56,7 +56,7 @@ export default styled(Swaps)`
   display: flex;
   flex-direction: column;
 
-  .estados-header {
+  .swaps-header {
     flex: 1;
     width: 100%;
     display: flex;

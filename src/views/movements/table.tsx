@@ -1,5 +1,10 @@
 import { Button, Pagination } from '@mui/material'
-import { IconTrash, IconEdit } from '@tabler/icons'
+import {
+  IconTrash,
+  IconEdit,
+  IconCirclePlus,
+  IconCircleMinus
+} from '@tabler/icons'
 import DynamicTable from 'components/DynamicTable'
 // Own
 import { Movement } from 'services/movements/types'
@@ -70,8 +75,23 @@ const Table: FunctionComponent<Props> = ({
           },
           {
             columnLabel: 'Monto',
-            cellAlignment: 'left',
-            onRender: (row: Movement) => (row.amount ? '$' + row.amount : '')
+            cellAlignment: 'right',
+            onRender: (row: Movement) =>
+              row.amount ? (
+                row.amount > 0 ? (
+                  <>
+                    {'$' + row.amount}
+                    <IconCirclePlus color='#3ab77b' />
+                  </>
+                ) : (
+                  <>
+                    {'- $' + row.amount.toString().slice(1, 9)}
+                    <IconCircleMinus color='orange' />
+                  </>
+                )
+              ) : (
+                ''
+              )
           },
           {
             columnLabel: 'Billetera',

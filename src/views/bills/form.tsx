@@ -4,11 +4,12 @@ import { FunctionComponent, useState } from 'react'
 import styled from 'styled-components'
 import MainCard from 'components/cards/MainCard'
 import SelectField from 'components/SelectField'
-import { Button, FormHelperText } from '@mui/material'
+import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
 import useOrderOptions from 'services/orders/_utils/use-orders-options'
 import * as Yup from 'yup'
 import useOrderById from 'services/orders/_utils/use-order-by-id'
 import InvoiceTable from 'components/InvoiceTable'
+import { useNavigate } from 'react-router'
 
 const USE_AUTOCOMPLETE = false
 
@@ -16,14 +17,24 @@ const Form: FunctionComponent<Props> = ({
   className,
   title,
   onSubmit,
-  initialValues
+  initialValues,
+  onEdit
 }) => {
   const [orderId, setOrderId] = useState<number | null>(null)
+  const [discountAmount, setDiscountAmount] = useState<string>('')
   const ordersOptions = useOrderOptions({
-    onlyWithoutBill: true,
+    onlyWithoutBill: !onEdit,
     includeOrderId: null
   })
-  const order = useOrderById(orderId)
+
+  let equis = orderId
+  if (onEdit) {
+    equis = initialValues.orderId
+  }
+
+  const order = useOrderById(equis)
+
+  const navigate = useNavigate()
 
   return (
     <div className={className}>
@@ -36,7 +47,10 @@ const Form: FunctionComponent<Props> = ({
         validationSchema={Yup.object().shape({
           orderId: Yup.number()
             .typeError('La orden es invalida')
-            .required('La orden es requerida')
+            .required('La orden es requerida'),
+          discountAmount: Yup.number().typeError(
+            'El descuento debe ser un valor númerico'
+          )
         })}
       >
         {({
@@ -54,6 +68,7 @@ const Form: FunctionComponent<Props> = ({
                   fullWidth={true}
                   className='field-form'
                   name='orderId'
+                  disabled={onEdit}
                   onChange={(e) => {
                     handleChange(e)
                     setOrderId(e.target.value as number)
@@ -66,6 +81,42 @@ const Form: FunctionComponent<Props> = ({
                   isAutocomplete={USE_AUTOCOMPLETE}
                   value={values.orderId}
                 />
+
+                {(onEdit || !!orderId) && (
+                  <FormControl className='field-form' fullWidth>
+                    <TextField
+                      id='discount-amount'
+                      label='Descuento'
+                      variant='outlined'
+                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        handleChange(e)
+                        setDiscountAmount(e.target.value)
+                      }}
+                      value={values.discountAmount}
+                      helperText={
+                        touched.discountAmount ? errors.discountAmount : ''
+                      }
+                      error={touched.discountAmount && !!errors.discountAmount}
+                      name='discountAmount'
+                    />
+                  </FormControl>
+                )}
+                {(onEdit || !!orderId) && (
+                  <FormControl className='field-form' fullWidth>
+                    <TextField
+                      id='description'
+                      label='Descripción de Facturación'
+                      variant='outlined'
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.description}
+                      helperText={touched.description ? errors.description : ''}
+                      error={touched.description && !!errors.description}
+                      name='description'
+                    />
+                  </FormControl>
+                )}
               </MainCard>
               <MainCard className={'form-data'} title={'Preview'}>
                 {!order ? (
@@ -73,7 +124,10 @@ const Form: FunctionComponent<Props> = ({
                     Seleccione una orden para previsualizar la factura
                   </span>
                 ) : (
-                  <InvoiceTable items={order.items} discountPercentage={null} />
+                  <InvoiceTable
+                    items={order.items}
+                    discountAmount={discountAmount}
+                  />
                 )}
               </MainCard>
             </div>
@@ -81,7 +135,17 @@ const Form: FunctionComponent<Props> = ({
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/clientela/bills')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>
@@ -95,12 +159,15 @@ const Form: FunctionComponent<Props> = ({
 interface Props {
   className?: string
   onSubmit: OnSubmit
+  onEdit: boolean
   title: string
   initialValues: FormValues
 }
 
 export type FormValues = {
   orderId: number | null
+  discountAmount: number
+  description: string
   submit: string | null
 }
 
@@ -116,6 +183,10 @@ export default styled(Form)`
   .flex-column {
     display: flex;
     flex-direction: column;
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .field-form {

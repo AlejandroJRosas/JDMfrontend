@@ -1,15 +1,15 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { InputOrderActivity } from 'core/order-activities/types';
+import { OrderDetailPayload } from 'core/order-activities/types';
 import { Service } from 'core/services/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/billing-activities`;
+const URL = `${API_BASE_URL}/orders-details`;
 
 export default async function createOrderActivity(
-  body: InputOrderActivity
+  body: OrderDetailPayload
 ): Promise<Service> {
   try {
     const response = await axios.post<Service>(

@@ -14,6 +14,7 @@ import useBookingById from 'core/bookings/use-booking-by-id'
 import OrderActivitiesCrudField from 'core/order-activities/create-field/order-activities-crud-field'
 import getErrorOnArrayOrText from 'helpers/get-error-on-array-or-text'
 import useClientsOptions from 'services/clients/_utils/use-clients-options'
+import { useNavigate } from 'react-router'
 
 const USE_AUTOCOMPLETES = false
 
@@ -26,11 +27,8 @@ const Form: FunctionComponent<Props> = ({
   initialValues,
   isUpdate
 }) => {
-  const [bookingId, setBookingId] = useState<number | null>(
-    initialValues.bookingId
-  )
   const clientsOptions = useClientsOptions()
-  const booking = useBookingById(bookingId)
+  const navigate = useNavigate()
   // const bookingsOptions = useBookingsOptions({
   //   onlyWithoutOrder: true,
   //   includeBookingId: initialValues.bookingId
@@ -70,25 +68,6 @@ const Form: FunctionComponent<Props> = ({
               }`}
             >
               <MainCard className={'form-data'} title={title}>
-                {/*RESERVA*/}
-                {/* <FormControl disabled={isUpdate} className="field-form" fullWidth>
-              <SelectField
-                  disabled={isUpdate}
-                  className="field-form"
-                  name="bookingId"
-                  onChange={(e) => {
-                    handleChange(e)
-                    setBookingId(+e.target.value)
-                  }}
-                  label="Reserva"
-                  onBlur={handleBlur}
-                  options={bookingsOptions}
-                  helperText={touched.bookingId ? errors.bookingId : ""}
-                  error={touched.bookingId && !!errors.bookingId}
-                  isAutocomplete={USE_AUTOCOMPLETES}
-                  value={values.bookingId}
-                />
-              </FormControl> */}
                 {/*FECHA DE ENTRADA*/}
                 {/* <FormControl
                   className='form-data field-form'
@@ -211,10 +190,7 @@ const Form: FunctionComponent<Props> = ({
                   <SelectField
                     className='field-form'
                     name='clientId'
-                    onChange={(e) => {
-                      handleChange(e)
-                      // setLicensePlate(e.target.value as string)
-                    }}
+                    onChange={handleChange}
                     onBlur={handleBlur}
                     label='Identificador de Cliente'
                     options={clientsOptions}
@@ -234,36 +210,6 @@ const Form: FunctionComponent<Props> = ({
                     value={values.clientId}
                   />
                 </FormControl>
-                {/* <FormControl className='field-form' fullWidth>
-                  <TextField
-                    id='responsibleDni'
-                    label='DNI de responsable'
-                    variant='outlined'
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.responsibleDni}
-                    helperText={
-                      touched.responsibleDni ? errors.responsibleDni : ''
-                    }
-                    error={touched.responsibleDni && !!errors.responsibleDni}
-                    name='responsibleDni'
-                  />
-                </FormControl> */}
-                {/* <FormControl className='field-form' fullWidth>
-                  <TextField
-                    id='responsibleName'
-                    label='Nombre de responsable'
-                    variant='outlined'
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.responsibleName}
-                    helperText={
-                      touched.responsibleName ? errors.responsibleName : ''
-                    }
-                    error={touched.responsibleName && !!errors.responsibleName}
-                    name='responsibleName'
-                  />
-                </FormControl> */}
               </MainCard>
               {isCreated && (
                 <div className={'form-data activites-crud'}>
@@ -272,15 +218,14 @@ const Form: FunctionComponent<Props> = ({
                     isParentUpdate={isUpdate}
                     //NOT use inputServices={values.services} (for moment)
                     inputServices={INPUT_ACTIVITIES}
-                    booking={booking}
-                    fieldName={'activities'}
+                    fieldName={'products'}
                     onHandleFormChange={handleChange}
                     helperText={
-                      touched.activities
-                        ? getErrorOnArrayOrText(errors.activities)
+                      touched.products
+                        ? getErrorOnArrayOrText(errors.products)
                         : ''
                     }
-                    error={touched.activities && !!errors.activities}
+                    error={touched.products && !!errors.products}
                   />
                 </div>
               )}
@@ -289,7 +234,17 @@ const Form: FunctionComponent<Props> = ({
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/clientela/orders')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>

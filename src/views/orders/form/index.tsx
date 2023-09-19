@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled } from 'styled-components'
 import Form from './form'
 
 export default styled(Form)`
@@ -9,12 +9,16 @@ export default styled(Form)`
   .page-header-container {
     padding-bottom: 18.5px;
   }
-  
+
   .page-header {
-    width: 100%;    
+    width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .flex-column {
@@ -116,4 +120,4 @@ export default styled(Form)`
     display: flex;
     flex-direction: row;
   }
-`;
+`

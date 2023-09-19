@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
-export default function useClientDni() {
+export default function useClientId() {
   const navigate = useNavigate()
   const params = useParams()
 
-  const [clientDni, setClientDni] = useState<string | null>(null)
+  const [clientId, setClientId] = useState<number | null>(null)
   useEffect(() => {
     if (!params.id || isNaN(params.id as any)) {
       navigate('/clientela/clients')
     }
 
-    setClientDni(params.id as unknown as string)
+    setClientId(params.id as unknown as number)
   }, [navigate, params.id])
 
-  return clientDni
+  return clientId
 }

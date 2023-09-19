@@ -2,23 +2,10 @@ import { Bill } from 'core/bills/types'
 import { Button, Pagination } from '@mui/material'
 import DynamicTable from 'components/DynamicTable'
 import styled from 'styled-components'
-// Own
-// import { useAppDispatch } from '../../store/index'
-// import {
-//   setIsLoading,
-//   setSuccessMessage,
-//   setErrorMessage
-// } from 'store/customizationSlice'
-// import BackendError from 'exceptions/backend-error'
-import {
-  FunctionComponent
-  // useCallback
-  // useState
-} from 'react'
+import { FunctionComponent } from 'react'
 import { PaginateData } from 'services/types'
 import { IconEye } from '@tabler/icons'
 import { useNavigate } from 'react-router'
-// import DialogDelete from 'components/dialogDelete'
 
 const Table: FunctionComponent<Prop> = ({
   items,
@@ -28,39 +15,7 @@ const Table: FunctionComponent<Prop> = ({
   fetchItems
 }) => {
   const navigate = useNavigate()
-  // const dispatch = useAppDispatch()
-  // const [open, setOpen] = useState<boolean>(false)
-  // const [billId, setCurrentBillId] = useState<number>(0)
 
-  // const handleOpen = useCallback((billId: number) => {
-  //   setOpen(true)
-  //   setCurrentBillId(billId)
-  // }, [])
-
-  // const handleClose = useCallback(() => {
-  //   setOpen(false)
-  //   setCurrentBillId(0)
-  // }, [])
-
-  // const onDelete = useCallback(
-  //   async (billId: number) => {
-  //     try {
-  //       dispatch(setIsLoading(true))
-  //       await deleteBill(billId!)
-  //       dispatch(setSuccessMessage(`Factura eliminada correctamente`))
-  //     } catch (error) {
-  //       if (error instanceof BackendError) {
-  //         dispatch(setErrorMessage(error.getMessage()))
-  //       }
-  //     } finally {
-  //       dispatch(setIsLoading(false))
-  //       handleClose()
-  //       fetchItems()
-  //     }
-  //   },
-  //   [dispatch, fetchItems, handleClose]
-  // )
-  // console.log('aa', items)
   return (
     <div className={className}>
       <DynamicTable
@@ -92,7 +47,7 @@ const Table: FunctionComponent<Prop> = ({
               row.discountAmount ? '$' + row.discountAmount : ''
           },
           {
-            columnLabel: 'Coste total',
+            columnLabel: 'Coste Total',
             cellAlignment: 'left',
             onRender: (row: Bill) => (row.totalCost ? '$' + row.totalCost : '')
           },
@@ -106,6 +61,17 @@ const Table: FunctionComponent<Prop> = ({
         components={[
           (row: Bill) => (
             <Button
+              color='primary'
+              onClick={() => {
+                navigate('/clientela/bills/edit/' + row.billId)
+              }}
+              startIcon={<IconEye />}
+            >
+              Editar
+            </Button>
+          ),
+          (row: Bill) => (
+            <Button
               color='secondary'
               onClick={() => {
                 navigate('/clientela/bills/detail/' + row.billId)
@@ -117,13 +83,6 @@ const Table: FunctionComponent<Prop> = ({
           )
         ]}
       />
-      {/* <DialogDelete
-        handleClose={handleClose}
-        onDelete={() => {
-          onDelete(billId)
-        }}
-        open={open}
-      /> */}
       <div className={'paginator-container'}>
         <Pagination
           count={paginate.pages}

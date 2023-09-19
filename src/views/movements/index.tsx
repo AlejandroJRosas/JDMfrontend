@@ -20,9 +20,9 @@ const Movements: FunctionComponent<Prop> = ({ className }) => {
   return (
     <MainCard
       className={className}
-      headerClass={'estados-header'}
+      headerClass={'movements-header'}
       title={
-        <div className={'estados-header'}>
+        <div className={'movements-header'}>
           <Typography variant='h3' className={'title-header'}>
             Movimientos Internos
           </Typography>
@@ -56,7 +56,7 @@ export default styled(Movements)`
   display: flex;
   flex-direction: column;
 
-  .estados-header {
+  .movements-header {
     flex: 1;
     width: 100%;
     display: flex;

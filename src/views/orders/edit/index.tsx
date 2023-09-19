@@ -37,13 +37,7 @@ const EditOrder: FunctionComponent<Props> = ({ className }) => {
         setSubmitting(true)
         await editOrder(orderId!, {
           clientId: values.clientId,
-          entryTime: values.entryTime,
-          estimatedDeparture: values.estimatedDeparture,
-          bookingId: values.bookingId,
-          employeeDni: values.employeeDni,
-          responsibleDni: values.responsibleDni,
-          responsibleName: values.responsibleName,
-          realDeparture: values.realDeparture
+          walletId: values.walletId
         })
         navigate('/orders')
         dispatch(setSuccessMessage(`Reserva editada correctamente`))
@@ -76,14 +70,8 @@ const EditOrder: FunctionComponent<Props> = ({ className }) => {
           isUpdate={true}
           initialValues={{
             clientId: order.clientId,
-            entryTime: order.entryTime,
-            estimatedDeparture: order.estimatedDeparture,
-            bookingId: order.bookingId,
-            employeeDni: order.employeeDni,
-            responsibleDni: order.responsibleDni,
-            responsibleName: order.responsibleName,
-            activities: order.orderActivities,
-            realDeparture: order.realDeparture,
+            walletId: order.walletId,
+            products: order.orderDetails,
             submit: null
           }}
           title={'Editar reserva'}

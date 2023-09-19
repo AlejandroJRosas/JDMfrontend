@@ -20,9 +20,9 @@ const Wallets: FunctionComponent<Prop> = ({ className }) => {
   return (
     <MainCard
       className={className}
-      headerClass={'estados-header'}
+      headerClass={'wallets-header'}
       title={
-        <div className={'estados-header'}>
+        <div className={'wallets-header'}>
           <Typography variant='h3' className={'title-header'}>
             Billeteras
           </Typography>
@@ -56,7 +56,7 @@ export default styled(Wallets)`
   display: flex;
   flex-direction: column;
 
-  .estados-header {
+  .wallets-header {
     flex: 1;
     width: 100%;
     display: flex;

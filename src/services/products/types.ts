@@ -7,4 +7,11 @@ export interface Product {
   createdAt: string;
 }
 
+export interface CostHelper {
+  purchaseId: number;
+  quantity: number;
+  unitaryPrice: number;
+  createdAt: string;
+}
+
 export type ProductPayload = Omit<Product, "productId" | "quantity" | "profit" | "createdAt">;

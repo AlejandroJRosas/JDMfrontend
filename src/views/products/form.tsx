@@ -13,8 +13,7 @@ import {
   TextField
   // Checkbox
 } from '@mui/material'
-
-// const USE_AUTOCOMPLETE = false
+import { useNavigate } from 'react-router'
 
 const Form: FunctionComponent<Props> = ({
   className,
@@ -23,6 +22,7 @@ const Form: FunctionComponent<Props> = ({
   initialValues,
   isCreate
 }) => {
+  const navigate = useNavigate()
   return (
     <div className={className}>
       <Formik
@@ -33,6 +33,8 @@ const Form: FunctionComponent<Props> = ({
         validationSchema={Yup.object().shape({
           name: Yup.string().max(255).required('El nombre es requerido'),
           price: Yup.number()
+            .notOneOf([0], 'El precio de venta no puede ser 0')
+            .min(0, 'El precio de venta no puede ser negativo')
             .typeError('El precio es invalido')
             .required('El precio es requerido')
         })}
@@ -47,51 +49,78 @@ const Form: FunctionComponent<Props> = ({
           values
         }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <MainCard className={'form-data'} title={title}>
-              <FormControl className='field-form' fullWidth>
-                <TextField
-                  id='name'
-                  label='Nombre del producto'
-                  variant='outlined'
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.name}
-                  helperText={touched.name ? errors.name : ''}
-                  error={touched.name && !!errors.name}
-                  name='name'
-                />
-              </FormControl>
-              <FormControl className='field-form' fullWidth>
-                <TextField
-                  id='price'
-                  label='Precio'
-                  variant='outlined'
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.price}
-                  helperText={touched.price ? errors.price : ''}
-                  error={touched.price && !!errors.price}
-                  name='price'
-                />
-              </FormControl>
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={values.isEcological}
+            <div className={isCreate ? '' : 'grid-container'}>
+              <MainCard className={'form-data form-grid'} title={title}>
+                <FormControl className='field-form' fullWidth>
+                  <TextField
+                    id='name'
+                    label='Nombre del producto'
+                    variant='outlined'
+                    onBlur={handleBlur}
                     onChange={handleChange}
-                    name='isEcological'
-                    color='primary'
+                    value={values.name}
+                    helperText={touched.name ? errors.name : ''}
+                    error={touched.name && !!errors.name}
+                    name='name'
                   />
-                }
-                name='isEcological'
-                label='Ecologico'
-              /> */}
-            </MainCard>
+                </FormControl>
+                <FormControl className='field-form' fullWidth>
+                  <TextField
+                    id='price'
+                    label='Precio'
+                    variant='outlined'
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.price}
+                    helperText={touched.price ? errors.price : ''}
+                    error={touched.price && !!errors.price}
+                    name='price'
+                  />
+                </FormControl>
+              </MainCard>
+
+              {!!!isCreate && (
+                <MainCard
+                  className={'form-data info-grid'}
+                  title={'Valor de Última Compra'}
+                >
+                  <div className={'grid-container-info'}>
+                    <div>
+                      <h3>ID de Compra</h3>
+                      <div>6</div>
+                    </div>
+                    <div>
+                      <h3>Cantidad Comprada</h3>
+                      <div>10</div>
+                    </div>
+                    <div>
+                      <h3>Precio Unitario en Compra</h3>
+                      <div>3.87</div>
+                    </div>
+                    <div>
+                      <h3>Fecha de Compra</h3>
+                      <div>12/08/2023 - 06:30 PM</div>
+                    </div>
+                  </div>
+                </MainCard>
+              )}
+            </div>
+
             <MainCard className={'form-data flex-column'}>
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/business/products')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>
@@ -133,6 +162,39 @@ export default styled(Form)`
 
   .field-form {
     margin: 6px 0px;
+  }
+
+  .form-grid {
+    grid-column: span 6;
+  }
+
+  .info-grid {
+    grid-column: span 4;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-column-gap: 20px;
+  }
+
+  .grid-container-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    /* media query para dispositivos móviles */
+    .grid-container {
+      grid-template-columns: 1fr; /* una sola columna */
+      grid-column-gap: 0; /* sin espacio entre columnas */
+      padding: 0; /* sin padding */
+    }
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .form-data {

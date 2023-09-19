@@ -6,15 +6,15 @@ import { useAppDispatch } from '../../../store/index'
 import { Client } from 'services/clients/types'
 import getClient from 'services/clients/get-client'
 
-export default function useClientByDni(clientDni: string | null) {
+export default function useClientById(clientId: number | null) {
   const dispatch = useAppDispatch()
   const [client, setClient] = useState<Client | null>(null)
 
   const fetchClient = useCallback(
-    async (clientDni: string) => {
+    async (clientId: number) => {
       try {
         dispatch(setIsLoading(true))
-        const response = await getClient(clientDni)
+        const response = await getClient(clientId)
         setClient(response)
       } catch (error) {
         if (error instanceof BackendError)
@@ -27,8 +27,8 @@ export default function useClientByDni(clientDni: string | null) {
   )
 
   useEffect(() => {
-    if (clientDni) fetchClient(clientDni)
-  }, [fetchClient, clientDni])
+    if (clientId) fetchClient(clientId)
+  }, [fetchClient, clientId])
 
   return client
 }

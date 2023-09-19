@@ -5,10 +5,9 @@ import { Box, Button, Fade, Modal } from '@mui/material'
 import { IconCirclePlus } from '@tabler/icons'
 import OrderProductsList from './order-products-list'
 import MainCard from 'components/cards/MainCard'
-import Form, { OrderActivityFormValues } from './form'
+import Form, { OrderDetailFormValues } from './form'
 import { FormikHelpers } from 'formik'
-import { LocalOrderActivity } from './types'
-import { Booking } from 'core/bookings/types'
+import { LocalOrderDetail } from '../types'
 
 const style = {
   position: 'absolute',
@@ -20,11 +19,9 @@ const style = {
   p: 0
 }
 
-const DEFAULT_INITIAL_VALUE: OrderActivityFormValues = {
-  serviceId: null,
-  activityId: null,
-  employeeDni: null,
-  hoursTaken: 0,
+const DEFAULT_INITIAL_VALUE: OrderDetailFormValues = {
+  productId: null,
+  quantity: 0,
   submit: null
 }
 
@@ -35,13 +32,12 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({
   onUpdate,
   onCreate,
   orderId,
-  booking,
   isParentUpdate
 }) => {
   //const isCreated = !isUpdate;
   const [open, setOpen] = useState(false)
   const [initialValue, setInitialValue] =
-    useState<OrderActivityFormValues | null>(null)
+    useState<OrderDetailFormValues | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const isUpdate = selectedIndex !== null
 
@@ -58,13 +54,11 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({
   }, [])
 
   const openEditModal = useCallback(
-    (orderActivity: LocalOrderActivity, index: number) => {
+    (orderActivity: LocalOrderDetail, index: number) => {
       setOpen(true)
       setInitialValue({
-        serviceId: +orderActivity.serviceId,
-        activityId: +orderActivity.activityId,
-        employeeDni: orderActivity.employeeDni,
-        hoursTaken: +orderActivity.hoursTaken,
+        productId: +orderActivity.productId,
+        quantity: +orderActivity.quantity,
         submit: null
       })
       setSelectedIndex(index)
@@ -82,7 +76,7 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({
             <Button
               color='primary'
               size='small'
-              disabled={!booking}
+              // disabled={!booking}
               variant={'outlined'}
               onClick={openCreateModal}
               startIcon={<IconCirclePlus />}
@@ -93,54 +87,52 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({
         }
       >
         <OrderProductsList
-          isParentUpdate={isParentUpdate}
           orderId={orderId}
+          isParentUpdate={isParentUpdate}
           items={items}
           onEdit={openEditModal}
           onDelete={onDelete}
         />
       </MainCard>
-      {booking && (
-        <Modal
-          open={open}
-          onClose={closeModal}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
-        >
-          <Fade in={open}>
-            <Box sx={style}>
-              <MainCard
-                className={className}
-                title={
-                  isUpdate
-                    ? 'Editar Producto de Orden'
-                    : 'Añadir Producto a Orden'
-                }
-              >
-                {open && initialValue && (
-                  <Form
-                    agencyRif={booking.agencyRif}
-                    isParentUpdate={isParentUpdate}
-                    onSubmit={(
-                      values: OrderActivityFormValues,
-                      helpers: FormikHelpers<OrderActivityFormValues>
-                    ) => {
-                      if (isUpdate && selectedIndex !== null) {
-                        onUpdate(items[selectedIndex], values, selectedIndex)
-                      } else {
-                        onCreate(values)
-                      }
-                      closeModal()
-                    }}
-                    initialValues={initialValue}
-                    isUpdate={isUpdate}
-                  />
-                )}
-              </MainCard>
-            </Box>
-          </Fade>
-        </Modal>
-      )}
+      <Modal
+        open={open}
+        onClose={closeModal}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <MainCard
+              className={className}
+              title={
+                isUpdate
+                  ? 'Editar Producto de Orden'
+                  : 'Añadir Producto a Orden'
+              }
+            >
+              {open && initialValue && (
+                <Form
+                  // agencyRif={booking.agencyRif}
+                  isParentUpdate={isParentUpdate}
+                  onSubmit={(
+                    values: OrderDetailFormValues,
+                    helpers: FormikHelpers<OrderDetailFormValues>
+                  ) => {
+                    if (isUpdate && selectedIndex !== null) {
+                      onUpdate(items[selectedIndex], values, selectedIndex)
+                    } else {
+                      onCreate(values)
+                    }
+                    closeModal()
+                  }}
+                  initialValues={initialValue}
+                  isUpdate={isUpdate}
+                />
+              )}
+            </MainCard>
+          </Box>
+        </Fade>
+      </Modal>
     </>
   )
 }
@@ -149,16 +141,15 @@ interface Props {
   isParentUpdate?: boolean
   className?: string
   isUpdate?: boolean
-  items: LocalOrderActivity[]
+  items: LocalOrderDetail[]
   orderId?: number | null
-  booking: Booking | null
-  onDelete: (item: LocalOrderActivity, index: number) => void
+  onDelete: (item: LocalOrderDetail, index: number) => void
   onUpdate: (
-    item: LocalOrderActivity,
-    formValues: OrderActivityFormValues,
+    item: LocalOrderDetail,
+    formValues: OrderDetailFormValues,
     index: number
   ) => void
-  onCreate: (formValues: OrderActivityFormValues) => void
+  onCreate: (formValues: OrderDetailFormValues) => void
 }
 
 export default styled(RecommendedServicesCrud)`

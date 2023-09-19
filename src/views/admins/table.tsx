@@ -1,5 +1,5 @@
 import { Button, Pagination } from '@mui/material'
-import { IconTrash, IconEdit } from '@tabler/icons'
+import { IconTrash, IconEdit, IconEye } from '@tabler/icons'
 import DynamicTable from 'components/DynamicTable'
 // Own
 import { Admin } from 'services/admins/types'

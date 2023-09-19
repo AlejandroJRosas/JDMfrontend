@@ -6,7 +6,7 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/swaps`;
 
-export default async function deleteMovement(idSwap: number): Promise<void> {
+export default async function deleteSwap(idSwap: number): Promise<void> {
   try {
     await axios.delete(
         `${URL}/${idSwap}`, {

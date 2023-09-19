@@ -13,8 +13,8 @@ import {
 import { useAppDispatch } from '../../../store/index'
 import Form, { FormValues } from '../form'
 import editAdmin from 'services/admins/edit-admin'
-import useAdminById from './use-admin-by-id'
-import useAdminId from './use-admin-id'
+import useAdminById from '../../../services/admins/_utils/use-admin-by-id'
+import useAdminId from '../../../services/admins/_utils/use-admin-id'
 import { FormikHelpers } from 'formik'
 
 const EditAdmin: FunctionComponent<Props> = ({ className }) => {

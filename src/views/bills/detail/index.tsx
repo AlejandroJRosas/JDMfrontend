@@ -1,32 +1,32 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react'
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import {  Typography } from '@mui/material';
-import styled from 'styled-components';
-import Detail from './detail';
-import useReloadBillById from 'core/bills/use-reload-bill-by-id';
-import useBillId from '../edit/use-bill-id';
+import MainCard from 'components/cards/MainCard'
+import { Typography } from '@mui/material'
+import styled from 'styled-components'
+import Detail from './detail'
+import useReloadBillById from 'core/bills/use-reload-bill-by-id'
+import useBillId from '../../../services/bills/_utils/use-bill-id'
 
-const ModelDetail: FunctionComponent<Props> = ({className}) => {
-  const orderId = useBillId();
-  const { bill, reload } = useReloadBillById(orderId);
+const ModelDetail: FunctionComponent<Props> = ({ className }) => {
+  const orderId = useBillId()
+  const { bill, reload } = useReloadBillById(orderId)
 
-  if (!bill) return <></>;
+  if (!bill) return <></>
 
   return (
     <div className={className}>
       <MainCard>
-        <Typography variant="h3" component="h3">
-          { 'Factura ' + bill?.billId }
+        <Typography variant='h3' component='h3'>
+          {'Factura de la Orden ' + bill?.orderId}
         </Typography>
       </MainCard>
       <Detail bill={bill} onRefresh={reload} />
     </div>
-  );
-};
+  )
+}
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export default styled(ModelDetail)`
@@ -51,5 +51,4 @@ export default styled(ModelDetail)`
     display: flex;
     flex-direction: row;
   }
-`;
-
+`

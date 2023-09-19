@@ -50,7 +50,7 @@ const business: MenuItem = {
         },
         {
           id: "create-purchase",
-          title: "Registrar una Compra",
+          title: "Crear una Compra",
           type: MenuItemType.Item,
           url: "/business/purchases/create",
           breadcrumbs: false,
@@ -60,10 +60,32 @@ const business: MenuItem = {
     {
       id: "products",
       title: "Inventario",
-      type: MenuItemType.Item,
+      type: MenuItemType.Collapse,
       icon: IconPackage,
-      url: "/business/products",
       breadcrumbs: false,
+      children: [
+        {
+          id: "list-products",
+          title: "Lista de Productos",
+          type: MenuItemType.Item,
+          url: "/business/products",
+          breadcrumbs: false,
+        },
+        {
+          id: "create-product",
+          title: "Crear un producto",
+          type: MenuItemType.Item,
+          url: "/business/products/create",
+          breadcrumbs: false,
+        },
+        {
+          id: "stats-products",
+          title: "Estadísticas",
+          type: MenuItemType.Item,
+          url: "/business/products/create",
+          breadcrumbs: false,
+        },
+      ],
     }
   ]
 };

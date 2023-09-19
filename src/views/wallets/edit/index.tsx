@@ -13,8 +13,8 @@ import {
 import { useAppDispatch } from '../../../store/index'
 import Form, { FormValues } from '../form'
 import editWallet from 'services/wallets/edit-wallet'
-import useWalletById from './use-wallet-by-id'
-import useWalletId from './use-wallet-id'
+import useWalletById from '../../../services/wallets/_utils/use-wallet-by-id'
+import useWalletId from '../../../services/wallets/_utils/use-wallet-id'
 import { FormikHelpers } from 'formik'
 
 const EditWallet: FunctionComponent<Props> = ({ className }) => {

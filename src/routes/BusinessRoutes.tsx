@@ -4,10 +4,14 @@ import { RouteObject } from 'react-router'
 import Admins from 'views/admins'
 import CreateAdmin from 'views/admins/create'
 import EditAdmin from 'views/admins/edit'
-//Productos
+// Products
 import Products from 'views/products'
 import CreateProduct from 'views/products/create'
 import EditProduct from 'views/products/edit'
+// Purchases
+import Purchases from 'views/purchases'
+// import CreateProduct from 'views/products/create'
+// import EditProduct from 'views/products/edit'
 // Service
 import Services from 'views/services'
 import CreateService from 'views/services/create'
@@ -32,7 +36,8 @@ const BusinessRoutes: RouteObject[] = [
       },
       // Purchases
       {
-        path: 'purchases'
+        path: 'purchases',
+        element: <Purchases />
       },
       {
         path: 'purchases/create'

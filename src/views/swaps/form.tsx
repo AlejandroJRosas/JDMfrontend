@@ -7,6 +7,7 @@ import SelectField from 'components/SelectField'
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
 import styled from 'styled-components'
 import useWalletOptions from 'services/wallets/_utils/use-wallets-options'
+import { useNavigate } from 'react-router'
 
 const USE_AUTOCOMPLETE = false
 
@@ -17,6 +18,7 @@ const Form: FunctionComponent<Props> = ({
   initialValues
 }) => {
   const walletOptions = useWalletOptions()
+  const navigate = useNavigate()
   return (
     <div className={className}>
       <Formik
@@ -26,6 +28,8 @@ const Form: FunctionComponent<Props> = ({
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
           amount: Yup.number()
+            .notOneOf([0], 'El monto no puede ser 0')
+            .min(0, 'No puede colocar números negativos')
             .typeError('El precio es invalido')
             .required('El precio es requerido'),
           source: Yup.number()
@@ -54,19 +58,6 @@ const Form: FunctionComponent<Props> = ({
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <MainCard className={'form-data'} title={title}>
-              <FormControl className='field-form' fullWidth>
-                <TextField
-                  id='amount'
-                  label='Monto'
-                  variant='outlined'
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.amount}
-                  helperText={touched.amount ? errors.amount : ''}
-                  error={touched.amount && !!errors.amount}
-                  name='amount'
-                />
-              </FormControl>
               <SelectField
                 fullWidth={true}
                 className='field-form'
@@ -93,12 +84,35 @@ const Form: FunctionComponent<Props> = ({
                 isAutocomplete={USE_AUTOCOMPLETE}
                 value={values.destination}
               />
+              <FormControl className='field-form' fullWidth>
+                <TextField
+                  id='amount'
+                  label='Monto'
+                  variant='outlined'
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.amount}
+                  helperText={touched.amount ? errors.amount : ''}
+                  error={touched.amount && !!errors.amount}
+                  name='amount'
+                />
+              </FormControl>
             </MainCard>
             <MainCard className={'form-data flex-column'}>
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/general/swaps')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>
@@ -139,6 +153,10 @@ export default styled(Form)`
 
   .field-form {
     margin: 6px 0px;
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .form-data {

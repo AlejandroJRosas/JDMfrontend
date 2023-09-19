@@ -1,8 +1,8 @@
 import { ChangeEvent } from "react";
-import { InputOrderActivity } from "../types";
+import { OrderDetailPayload } from "../types";
 
-export type LocalOrderActivity = Omit<InputOrderActivity, 'orderId'>;
+export type LocalOrderActivity = Omit<OrderDetailPayload, 'orderId'>;
 
 export type ChangeEventOrderActivities = ChangeEvent<{
-  value: InputOrderActivity[]
+  value: OrderDetailPayload[]
 }>;

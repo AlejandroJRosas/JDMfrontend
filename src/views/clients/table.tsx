@@ -12,7 +12,7 @@ import {
 import BackendError from 'exceptions/backend-error'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { PaginateData } from 'services/types'
-import { IconEdit, IconTrash } from '@tabler/icons'
+import { IconEdit, IconEye, IconTrash } from '@tabler/icons'
 import { useNavigate } from 'react-router'
 import deleteClient from 'services/clients/delete-client'
 import DialogDelete from 'components/dialogDelete'
@@ -27,23 +27,23 @@ const Table: FunctionComponent<Prop> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [open, setOpen] = useState<boolean>(false)
-  const [clientDni, setClientDni] = useState<string>('')
+  const [clientId, setClientId] = useState<number>(0)
 
-  const handleOpen = useCallback((clientDni: string) => {
+  const handleOpen = useCallback((clientId: number) => {
     setOpen(true)
-    setClientDni(clientDni)
+    setClientId(clientId)
   }, [])
 
   const handleClose = useCallback(() => {
     setOpen(false)
-    setClientDni('')
+    setClientId(0)
   }, [])
 
   const onDelete = useCallback(
-    async (clientDni: string) => {
+    async (clientId: number) => {
       try {
         dispatch(setIsLoading(true))
-        await deleteClient(clientDni!)
+        await deleteClient(clientId!)
         //navigate('/clients');
         dispatch(setSuccessMessage(`Cliente eliminado correctamente`))
       } catch (error) {
@@ -66,7 +66,7 @@ const Table: FunctionComponent<Prop> = ({
           { columnLabel: 'ID', fieldName: 'clientId', cellAlignment: 'left' },
           { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
           {
-            columnLabel: 'Teléfono principal',
+            columnLabel: 'Número de Teléfono',
             cellAlignment: 'left',
             onRender: (row: Client) =>
               row.mainPhone
@@ -77,18 +77,18 @@ const Table: FunctionComponent<Prop> = ({
                   row.mainPhone.slice(7, 11)
                 : ''
           },
-          {
-            columnLabel: 'Teléfono secundario',
-            cellAlignment: 'left',
-            onRender: (row: Client) =>
-              row.secondaryPhone
-                ? row.secondaryPhone.slice(0, 4) +
-                  ' ' +
-                  row.secondaryPhone.slice(4, 7) +
-                  ' ' +
-                  row.secondaryPhone.slice(7, 11)
-                : ''
-          },
+          // {
+          //   columnLabel: 'Teléfono Secundario',
+          //   cellAlignment: 'left',
+          //   onRender: (row: Client) =>
+          //     row.secondaryPhone
+          //       ? row.secondaryPhone.slice(0, 4) +
+          //         ' ' +
+          //         row.secondaryPhone.slice(4, 7) +
+          //         ' ' +
+          //         row.secondaryPhone.slice(7, 11)
+          //       : ''
+          // },
           {
             columnLabel: 'Creación',
             fieldName: 'createdAt',
@@ -111,6 +111,17 @@ const Table: FunctionComponent<Prop> = ({
           (row: Client) => (
             <Button
               color='secondary'
+              onClick={() => {
+                navigate('/general/wallets/detail/' + row.clientId)
+              }}
+              startIcon={<IconEye />}
+            >
+              Detalle
+            </Button>
+          ),
+          (row: Client) => (
+            <Button
+              color='secondary'
               onClick={() => handleOpen(row.clientId)}
               startIcon={<IconTrash />}
             >
@@ -122,7 +133,7 @@ const Table: FunctionComponent<Prop> = ({
       <DialogDelete
         handleClose={handleClose}
         onDelete={() => {
-          onDelete(clientDni)
+          onDelete(clientId)
         }}
         open={open}
       />

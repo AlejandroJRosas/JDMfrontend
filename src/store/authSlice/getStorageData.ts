@@ -12,6 +12,5 @@ export const getStorageData = (): AuthStored => {
     }
   }
 
-  console.error('No auth');
   throw new Error('No auth');
 };

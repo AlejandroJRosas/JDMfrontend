@@ -20,9 +20,9 @@ const Admins: FunctionComponent<Prop> = ({ className }) => {
   return (
     <MainCard
       className={className}
-      headerClass={'estados-header'}
+      headerClass={'admins-header'}
       title={
-        <div className={'estados-header'}>
+        <div className={'admins-header'}>
           <Typography variant='h3' className={'title-header'}>
             Administradores
           </Typography>
@@ -56,7 +56,7 @@ export default styled(Admins)`
   display: flex;
   flex-direction: column;
 
-  .estados-header {
+  .admins-header {
     flex: 1;
     width: 100%;
     display: flex;

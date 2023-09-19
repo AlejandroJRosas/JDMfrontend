@@ -13,7 +13,7 @@ import BackendError from 'exceptions/backend-error'
 import deleteProduct from 'services/products/delete-product'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { PaginateData } from 'services/types'
-import { IconEdit, IconTrash } from '@tabler/icons'
+import { IconEdit, IconEye, IconTrash } from '@tabler/icons'
 import { useNavigate } from 'react-router'
 import DialogDelete from 'components/dialogDelete'
 
@@ -62,7 +62,7 @@ const Table: FunctionComponent<Prop> = ({
     <div className={className}>
       <DynamicTable
         headers={[
-          { columnLabel: 'Id', fieldName: 'productId', cellAlignment: 'left' },
+          { columnLabel: 'ID', fieldName: 'productId', cellAlignment: 'left' },
           {
             columnLabel: 'Nombre',
             fieldName: 'name',
@@ -76,16 +76,6 @@ const Table: FunctionComponent<Prop> = ({
           {
             columnLabel: 'Cantidad',
             fieldName: 'quantity',
-            cellAlignment: 'left'
-          },
-          {
-            columnLabel: 'Ganancia',
-            cellAlignment: 'left',
-            onRender: (row: Product) => (row.price ? '$' + row.price : '')
-          },
-          {
-            columnLabel: 'Creación',
-            fieldName: 'createdAt',
             cellAlignment: 'left'
           },
           {
@@ -105,6 +95,17 @@ const Table: FunctionComponent<Prop> = ({
               startIcon={<IconEdit />}
             >
               Editar
+            </Button>
+          ),
+          (row: Product) => (
+            <Button
+              color='secondary'
+              onClick={() => {
+                navigate('/business/products/detail/' + row.productId)
+              }}
+              startIcon={<IconEye />}
+            >
+              Detalle
             </Button>
           ),
           (row: Product) => (

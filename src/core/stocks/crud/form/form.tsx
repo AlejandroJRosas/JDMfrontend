@@ -1,4 +1,7 @@
-import { FunctionComponent, useState } from 'react'
+import {
+  FunctionComponent
+  // useState
+} from 'react'
 import { Formik, FormikHelpers } from 'formik'
 // material-ui
 import {
@@ -26,7 +29,9 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
   const isCreated = !isUpdate
   const validationSchema = useValidationSchema()
   const agenciesOptions = useAgenciesOptions()
-  const productsOptions = useProductsOptions()
+  const productsOptions = useProductsOptions({
+    onlyOnStock: true
+  })
 
   return (
     <div className={className}>

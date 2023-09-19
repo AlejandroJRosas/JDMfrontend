@@ -11,7 +11,13 @@ import {
 import BackendError from 'exceptions/backend-error'
 import { FunctionComponent, useCallback, useState } from 'react'
 import { PaginateData } from 'services/types'
-import { IconEdit, IconTrash, IconEye } from '@tabler/icons'
+import {
+  IconEdit,
+  IconTrash,
+  IconEye,
+  IconCircleCheck,
+  IconCircleDashed
+} from '@tabler/icons'
 import { useNavigate } from 'react-router'
 import deleteOrder from 'services/orders/delete-order'
 import DialogDelete from 'components/dialogDelete'
@@ -65,13 +71,18 @@ const Table: FunctionComponent<Prop> = ({
         headers={[
           { columnLabel: 'ID', fieldName: 'orderId', cellAlignment: 'left' },
           {
-            columnLabel: 'Cliente',
-            fieldName: 'clientId',
+            columnLabel: 'Lista',
+            onRender: (row: Order) =>
+              row.isClosed ? (
+                <IconCircleCheck color='#3ab77b' />
+              ) : (
+                <IconCircleDashed color='#2196f3' />
+              ),
             cellAlignment: 'left'
           },
           {
-            columnLabel: 'Finalizado',
-            onRender: (row: Order) => (row.isClosed ? 'Si' : 'No'),
+            columnLabel: 'Cliente',
+            fieldName: 'clientId',
             cellAlignment: 'left'
           },
           {
@@ -80,9 +91,10 @@ const Table: FunctionComponent<Prop> = ({
             cellAlignment: 'left'
           },
           {
-            columnLabel: 'Administrador',
-            fieldName: 'adminId',
-            cellAlignment: 'left'
+            columnLabel: 'Monto Total',
+            cellAlignment: 'left',
+            onRender: (row: Order) =>
+              row.totalAmount ? '$' + row.totalAmount : ''
           },
           {
             columnLabel: 'Creación',
@@ -93,15 +105,19 @@ const Table: FunctionComponent<Prop> = ({
         rows={items}
         components={[
           (row: Order) => (
-            <Button
-              color='primary'
-              onClick={() => {
-                navigate('/clientela/orders/edit/' + row.orderId)
-              }}
-              startIcon={<IconEdit />}
-            >
-              Editar
-            </Button>
+            <>
+              {!row.isClosed && (
+                <Button
+                  color='primary'
+                  onClick={() => {
+                    navigate('/clientela/orders/edit/' + row.orderId)
+                  }}
+                  startIcon={<IconEdit />}
+                >
+                  Editar
+                </Button>
+              )}
+            </>
           ),
           (row: Order) => (
             <Button

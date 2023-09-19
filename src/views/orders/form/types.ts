@@ -1,17 +1,11 @@
-import { OrderActivity } from "core/order-activities/types";
+import { OrderDetail } from "core/order-activities/types";
 import { FormikHelpers } from "formik";
 
 
 export type FormValues = {
   clientId: number;
-  entryTime: string;
-  estimatedDeparture: string;
-  bookingId: number;
-  employeeDni: string;
-  responsibleDni: string | null;
-  realDeparture: string | null;
-  responsibleName: string | null;
-  activities: OrderActivity[];
+  walletId: number;
+  products: OrderDetail[];
   submit: string | null;    
 };
 

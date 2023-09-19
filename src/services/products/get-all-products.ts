@@ -8,9 +8,9 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/products/all`;
 
-export default async function getAllProducts(): Promise<Product[]> {
+export default async function getAllProducts(body?: Body): Promise<Product[]> {
   try {
-    const urlParametrized = addQueryParams(URL, {});
+    const urlParametrized = addQueryParams(URL, body || {});
     const response = await axios.get<Product[]>(
       urlParametrized, {
         headers: {
@@ -22,5 +22,9 @@ export default async function getAllProducts(): Promise<Product[]> {
   } catch (error: unknown) {
     throw new BackendError(error);
   }
+}
+
+export type Body = {
+  onlyOnStock: boolean
 }
 

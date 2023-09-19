@@ -69,12 +69,12 @@ const Table: FunctionComponent<Props> = ({
             onRender: (row: Swap) => (row.amount ? '$' + row.amount : '')
           },
           {
-            columnLabel: 'Billetera Origen',
+            columnLabel: 'Origen',
             fieldName: 'source',
             cellAlignment: 'left'
           },
           {
-            columnLabel: 'Billetera Destino',
+            columnLabel: 'Destino',
             fieldName: 'destination',
             cellAlignment: 'left'
           },

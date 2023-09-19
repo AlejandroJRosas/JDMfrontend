@@ -1,5 +1,3 @@
-// material-ui
-
 import { useEffect, useState, useCallback } from 'react';
 import getPaginate from 'services/admins/get-paginate';
 import { Admin } from 'services/admins/types';

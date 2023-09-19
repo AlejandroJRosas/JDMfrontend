@@ -14,15 +14,15 @@ import {
 } from 'store/customizationSlice'
 import Form, { FormValues } from '../form'
 import editClient from 'services/clients/edit-client'
-import useClientByDni from './use-client-by-dni'
-import useClientDni from './use-client-dni'
+import useClientById from '../../../services/clients/_utils/use-client-by-id'
+import useClientId from '../../../services/clients/_utils/use-client-id'
 import { FormikHelpers } from 'formik'
 
 const EditClient: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const clientDni = useClientDni()
-  const client = useClientByDni(clientDni)
+  const clientId = useClientId()
+  const client = useClientById(clientId)
 
   const onSubmit = useCallback(
     async (
@@ -34,7 +34,7 @@ const EditClient: FunctionComponent<Props> = ({ className }) => {
         setErrors({})
         setStatus({})
         setSubmitting(true)
-        await editClient(clientDni!, values)
+        await editClient(clientId!, values)
         navigate('/clientela/clients')
         dispatch(
           setSuccessMessage(`Cliente ${values.name} editado correctamente`)
@@ -53,7 +53,7 @@ const EditClient: FunctionComponent<Props> = ({ className }) => {
         setSubmitting(false)
       }
     },
-    [clientDni, navigate, dispatch]
+    [clientId, navigate, dispatch]
   )
 
   return (

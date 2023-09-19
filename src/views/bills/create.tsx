@@ -29,7 +29,7 @@ const CreateBill: FunctionComponent<Props> = ({ className }) => {
         setErrors({})
         setStatus({})
         setSubmitting(true)
-        await createBill(values)
+        await createBill({ ...values, discountAmount: +values.discountAmount })
         navigate('/clientela/bills')
         dispatch(setSuccessMessage(`Factura creada correctamente`))
       } catch (error) {
@@ -60,10 +60,13 @@ const CreateBill: FunctionComponent<Props> = ({ className }) => {
       <Form
         initialValues={{
           orderId: null,
+          description: '',
+          discountAmount: 0,
           submit: null
         }}
         title={'Crear factura'}
         onSubmit={onSubmit}
+        onEdit={false}
       />
     </div>
   )

@@ -15,14 +15,10 @@ import Form from './form'
 import createOrder from 'services/orders/create-order'
 
 const INITIAL_VALUES: any = {
-  entryTime: '',
-  estimatedDeparture: '',
-  bookingId: 0,
-  employeeDni: '',
-  responsibleDni: null,
-  responsibleName: null,
-  realDeparture: null,
-  activities: [],
+  clientId: 0,
+  walletId: 0,
+  adminId: 0,
+  products: [],
   submit: null
 }
 
@@ -40,14 +36,9 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
         setSubmitting(true)
         await createOrder({
           clientId: values.clientId,
-          entryTime: values.entryTime,
-          estimatedDeparture: values.estimatedDeparture,
-          bookingId: values.bookingId,
-          employeeDni: values.employeeDni,
-          responsibleDni: values.responsibleDni,
-          responsibleName: values.responsibleName,
-          activities: values.activities,
-          realDeparture: null
+          walletId: values.walletId,
+          adminId: values.adminId,
+          products: values.products
         })
         navigate('/clientela/orders')
         dispatch(

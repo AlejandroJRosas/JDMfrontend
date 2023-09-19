@@ -5,8 +5,7 @@ import { Formik, FormikHelpers } from 'formik'
 import MainCard from 'components/cards/MainCard'
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material'
 import styled from 'styled-components'
-
-const USE_AUTOCOMPLETES = false
+import { useNavigate } from 'react-router'
 
 const Form: FunctionComponent<Props> = ({
   className,
@@ -14,6 +13,7 @@ const Form: FunctionComponent<Props> = ({
   onSubmit,
   initialValues
 }) => {
+  const navigate = useNavigate()
   return (
     <div className={className}>
       <Formik
@@ -57,7 +57,17 @@ const Form: FunctionComponent<Props> = ({
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
               )}
-              <Button variant='outlined' type='submit' color='primary'>
+              <Button
+                variant='outlined'
+                onClick={() => {
+                  navigate('/general/wallets')
+                }}
+                color='primary'
+                className={'margin'}
+              >
+                Volver
+              </Button>
+              <Button variant='outlined' type='submit' color='secondary'>
                 Guardar
               </Button>
             </MainCard>
@@ -100,6 +110,10 @@ export default styled(Form)`
 
   .form-header-card {
     width: 100%;
+  }
+
+  .margin {
+    margin-right: 10px;
   }
 
   .form-header {

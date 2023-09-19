@@ -1,5 +1,6 @@
 export interface AuthState {
   user: null | {
+    id: number;
     email: string;
     name: string;
   },
@@ -9,6 +10,7 @@ export interface AuthState {
 
 export interface AuthStored {
   user: {
+    id: number;
     email: string;
     name: string;
   },

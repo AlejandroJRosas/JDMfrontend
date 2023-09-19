@@ -1,8 +1,7 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { LocalOrderActivity } from 'core/order-activities/types';
-import { Order } from 'services/orders/types';
+import { Order, OrderPayload } from 'services/orders/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 
@@ -11,7 +10,7 @@ const URL = `${API_BASE_URL}/orders`;
 export default async function createOrder(body: OrderPayload): Promise<Order> {
   try {
     const response = await axios.post<Order>(
-        URL, body, {
+        URL, {...body, adminId: store.getState().auth.user?.id}, {
         headers: { Authorization: `Bearer ${store.getState().auth.token}` }
       }
     );
@@ -20,8 +19,3 @@ export default async function createOrder(body: OrderPayload): Promise<Order> {
     throw new BackendError(error);
   }
 }
-
-export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items' | 'orderActivities' | 'orderProducts'> & {
-  activities: LocalOrderActivity[];
-};
-

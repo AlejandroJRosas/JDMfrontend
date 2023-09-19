@@ -1,20 +1,22 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react'
 // material-ui
-import styled from 'styled-components';
-import DynamicTable, { Header } from 'components/DynamicTable';
-import { OrderProduct } from './types';
+import styled from 'styled-components'
+import DynamicTable, { Header } from 'components/DynamicTable'
+import { OrderDetail } from '../order-activities/types'
 
-const OrderProductsList: FunctionComponent<Props>
-  = ({ className, items, orderId, isParentUpdate }) =>
-{
-
-  const columnForParentId: Header<any>[] = [];
+const OrderDetailsList: FunctionComponent<Props> = ({
+  className,
+  items,
+  orderId,
+  isParentUpdate
+}) => {
+  const columnForParentId: Header<any>[] = []
   if (orderId !== null && isParentUpdate) {
     columnForParentId.push({
       columnLabel: 'Orden',
       cellAlignment: 'left',
-      onRender: (_: OrderProduct) => orderId
-    });
+      onRender: (_: OrderDetail) => orderId
+    })
   }
 
   return (
@@ -31,34 +33,33 @@ const OrderProductsList: FunctionComponent<Props>
           {
             columnLabel: 'Description',
             fieldName: 'description',
-            cellAlignment: 'left',
+            cellAlignment: 'left'
           },
           {
             columnLabel: 'Precio',
             fieldName: 'price',
-            cellAlignment: 'left',
+            cellAlignment: 'left'
           },
           {
             columnLabel: 'Cantidad',
             fieldName: 'quantity',
             cellAlignment: 'left'
-          },
+          }
         ]}
         rows={items}
       />
     </>
-  );
-};
-
-interface Props {
-  orderId?: number | null;
-  className?: string;
-  isParentUpdate?: boolean;
-  items: OrderProduct[];
+  )
 }
 
-export default styled(OrderProductsList)`
+interface Props {
+  orderId?: number | null
+  className?: string
+  isParentUpdate?: boolean
+  items: OrderDetail[]
+}
 
+export default styled(OrderDetailsList)`
   tr.disabled {
     opacity: 0.7;
     -webkit-touch-callout: none;
@@ -74,4 +75,4 @@ export default styled(OrderProductsList)`
   .full-empty-state {
     width: 100%;
   }
-`;
+`

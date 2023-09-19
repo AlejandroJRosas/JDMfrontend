@@ -13,8 +13,8 @@ import {
 import { useAppDispatch } from '../../../store/index'
 import Form, { FormValues } from '../form'
 import editMovement from 'services/movements/edit-movement'
-import useMovementById from './use-movement-by-id'
-import useMovementId from './use-movement-id'
+import useMovementById from '../../../services/movements/_utils/use-movement-by-id'
+import useMovementId from '../../../services/movements/_utils/use-movement-id'
 import { FormikHelpers } from 'formik'
 
 const EditMovement: FunctionComponent<Props> = ({ className }) => {

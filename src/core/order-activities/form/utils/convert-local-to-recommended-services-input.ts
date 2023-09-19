@@ -1,25 +1,22 @@
-import { OrderActivity, InputOrderActivity } from "../../types";
-import { LocalOrderActivity } from "../types";
+import { LocalOrderDetail, OrderDetail, OrderDetailPayload } from "../../types";
 
-type LocalOrderActivityType = LocalOrderActivity | InputOrderActivity | OrderActivity;
+type LocalOrderActivityType = LocalOrderDetail | OrderDetailPayload | OrderDetail;
 
 export default function convertLocalToOrderActivitysInput(
-  orderId: number, activities: LocalOrderActivityType[]
-): InputOrderActivity[] {
-  return activities.map(
+  orderId: number, products: LocalOrderActivityType[]
+): OrderDetailPayload[] {
+  return products.map(
     (orderActivity: LocalOrderActivityType) =>
       convertLocalToOrderActivityInput(orderId, orderActivity)
   );
 }
 
 export function convertLocalToOrderActivityInput(
-  orderId: number, orderActivity: LocalOrderActivityType
-): InputOrderActivity {
+  orderId: number, product: LocalOrderActivityType
+): OrderDetailPayload {
   return ({
-    serviceId: +orderActivity.serviceId,
-    activityId: +orderActivity.activityId,
-    employeeDni: orderActivity.employeeDni,
-    hoursTaken: +orderActivity.hoursTaken,
+    productId: +product.productId,
+    quantity: +product.quantity,
     orderId,
   });
 }

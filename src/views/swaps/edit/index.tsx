@@ -13,8 +13,8 @@ import {
 import { useAppDispatch } from '../../../store/index'
 import Form, { FormValues } from '../form'
 import editSwap from 'services/swaps/edit-swap'
-import useSwapById from './use-swap-by-id'
-import useSwapId from './use-swap-id'
+import useSwapById from '../../../services/swaps/_utils/use-swap-by-id'
+import useSwapId from '../../../services/swaps/_utils/use-swap-id'
 import { FormikHelpers } from 'formik'
 
 const EditSwap: FunctionComponent<Props> = ({ className }) => {

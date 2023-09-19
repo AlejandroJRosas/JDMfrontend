@@ -1,17 +1,16 @@
-import { OrderActivity, InputOrderActivity } from "../../types";
-import { LocalOrderActivity } from "../types";
+import { LocalOrderDetail } from "../../types";
 
-type OrderActivityType = LocalOrderActivity | InputOrderActivity | OrderActivity;
+type OrderDetailType = LocalOrderDetail;
 
 export default function convertToLocalOrderActivitys(
-  activities: OrderActivityType[]
-): LocalOrderActivity[] {
-  return activities.map(
-        (orderActivity: OrderActivityType) => ({
-          serviceId: +orderActivity.serviceId,
-          activityId: +orderActivity.activityId,
-          employeeDni: orderActivity.employeeDni,
-          hoursTaken: +orderActivity.hoursTaken,
+  products: OrderDetailType[]
+): LocalOrderDetail[] {
+  return products.map(
+        (product: OrderDetailType) => ({
+          productId: +product.productId,
+          name: ''+product.name,
+          price: +product.price,
+          quantity: +product.quantity,
         })
   );
 }

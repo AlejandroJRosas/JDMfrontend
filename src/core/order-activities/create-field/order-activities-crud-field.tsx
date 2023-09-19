@@ -3,9 +3,9 @@ import { styled } from 'styled-components'
 import OrderProductsCrud from 'core/order-activities/form/order-products-crud'
 import { FormControl, FormHelperText } from '@mui/material'
 import useInput from './use-input'
-import { InputOrderActivity } from '../types'
-import { ChangeEventOrderActivities, LocalOrderActivity } from '../form/types'
-import { Booking } from 'core/bookings/types'
+import { OrderDetailPayload } from '../types'
+import { ChangeEventOrderActivities } from '../form/types'
+import { LocalOrderDetail } from '../types'
 
 const OrderProductsCrudField: FunctionComponent<Props> = ({
   inputServices,
@@ -15,14 +15,13 @@ const OrderProductsCrudField: FunctionComponent<Props> = ({
   error,
   helperText,
   orderId,
-  booking,
   isParentUpdate
 }) => {
-  const onChangeOrderActivitys = useCallback(
-    (services: InputOrderActivity[]) => {
-      onChange?.(services)
+  const onChangeOrderDetails = useCallback(
+    (products: OrderDetailPayload[]) => {
+      onChange?.(products)
 
-      const changeEventOrderActivities = createChangeEvent(fieldName, services)
+      const changeEventOrderActivities = createChangeEvent(fieldName, products)
       onHandleFormChange(changeEventOrderActivities)
     },
     [fieldName, onChange, onHandleFormChange]
@@ -31,13 +30,12 @@ const OrderProductsCrudField: FunctionComponent<Props> = ({
   const { items, onDelete, onUpdate, onCreate } = useInput(
     orderId,
     inputServices,
-    onChangeOrderActivitys
+    onChangeOrderDetails
   )
 
   return (
     <FormControl error={error} fullWidth>
       <OrderProductsCrud
-        booking={booking}
         isParentUpdate={isParentUpdate}
         orderId={orderId}
         onDelete={onDelete}
@@ -53,11 +51,10 @@ const OrderProductsCrudField: FunctionComponent<Props> = ({
 interface Props {
   helperText?: string
   error?: boolean
-  booking: Booking | null
   fieldName: string
   className?: string
-  inputServices: LocalOrderActivity[]
-  onChange?: (services: InputOrderActivity[]) => void
+  inputServices: LocalOrderDetail[]
+  onChange?: (services: OrderDetailPayload[]) => void
   onHandleFormChange: (services: ChangeEventOrderActivities) => void
   orderId: number
   isParentUpdate?: boolean
@@ -65,13 +62,13 @@ interface Props {
 
 function createChangeEvent(
   fieldName: string,
-  services: InputOrderActivity[]
+  products: OrderDetailPayload[]
 ): ChangeEventOrderActivities {
   return {
     target: {
       name: fieldName,
       id: fieldName,
-      value: services
+      value: products
     }
   } as unknown as ChangeEventOrderActivities
 }

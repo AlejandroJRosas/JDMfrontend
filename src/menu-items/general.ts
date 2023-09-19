@@ -1,5 +1,6 @@
 import {
-  IconCreditCard, 
+  IconScale,
+  IconCreditCard,
   IconReportMoney, 
   IconReplace
 } from '@tabler/icons';
@@ -10,6 +11,22 @@ const other: MenuItem = {
   type: MenuItemType.Group,
   title: 'General',
   children: [
+    {
+      id: "general-overview",
+      title: "Balance General",
+      type: MenuItemType.Collapse,
+      icon: IconScale,
+      breadcrumbs: false,
+      children: [
+        {
+          id: "overview",
+          title: "Vista General",
+          type: MenuItemType.Item,
+          url: "/general/balance",
+          breadcrumbs: false,
+        }
+      ],
+    },
     {
       id: "wallets",
       title: "Billeteras",

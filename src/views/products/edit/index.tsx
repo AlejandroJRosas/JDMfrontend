@@ -67,15 +67,17 @@ const EditProduct: FunctionComponent<Props> = ({ className }) => {
         </Typography>
       </MainCard>
       {product && (
-        <Form
-          initialValues={{
-            name: product.name,
-            price: product.price,
-            submit: null
-          }}
-          title={'Editar producto'}
-          onSubmit={onSubmit}
-        />
+        <>
+          <Form
+            initialValues={{
+              name: product.name,
+              price: product.price,
+              submit: null
+            }}
+            title={'Editar producto'}
+            onSubmit={onSubmit}
+          />
+        </>
       )}
     </div>
   )

@@ -7,10 +7,10 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/clients`;
 
-export default async function getClient(clientDni: string): Promise<Client> {
+export default async function getClient(clientId: number): Promise<Client> {
   try {
     const response = await axios.get<Client>(
-        `${URL}/${clientDni}`, {
+        `${URL}/${clientId}`, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }

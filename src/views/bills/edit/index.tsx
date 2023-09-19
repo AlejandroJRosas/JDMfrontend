@@ -9,7 +9,7 @@ import useBillById from 'core/bills/use-bill-by-id'
 import BackendError from 'exceptions/backend-error'
 import MainCard from 'components/cards/MainCard'
 import editBill from 'services/bills/edit-bill'
-import useBillId from './use-bill-id'
+import useBillId from '../../../services/bills/_utils/use-bill-id'
 import { Typography } from '@mui/material'
 import { useNavigate } from 'react-router'
 import Form, { FormValues } from '../form'
@@ -22,6 +22,7 @@ const EditBill: FunctionComponent<Props> = ({ className }) => {
   const dispatch = useAppDispatch()
   const billId = useBillId()
   const bill = useBillById(billId)
+
   const onSubmit = useCallback(
     async (
       values: any,
@@ -32,9 +33,12 @@ const EditBill: FunctionComponent<Props> = ({ className }) => {
         setErrors({})
         setStatus({})
         setSubmitting(true)
-        await editBill(billId!, values)
+        await editBill(billId!, {
+          ...values,
+          discountAmount: +values.discountAmount
+        })
         navigate('/clientela/bills')
-        dispatch(setSuccessMessage(`Factura editada correctamente`))
+        dispatch(setSuccessMessage(`Factura ${billId} editada correctamente`))
       } catch (error) {
         if (error instanceof BackendError) {
           setErrors({
@@ -63,10 +67,13 @@ const EditBill: FunctionComponent<Props> = ({ className }) => {
         <Form
           initialValues={{
             orderId: bill.orderId,
+            discountAmount: bill.discountAmount,
+            description: bill.description,
             submit: null
           }}
           title={'Editar factura'}
           onSubmit={onSubmit}
+          onEdit={true}
         />
       )}
     </div>
